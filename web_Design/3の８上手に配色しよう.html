@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>配色シミュレーター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        /* CSS変数で色を管理。JSからこれらを更新します */
+        --color-base: hsl(50, 100%, 95%);
+        --text-base: #1a1a1a;
+        --color-main: hsl(30, 90%, 55%);
+        --text-main: #ffffff;
+        --color-accent: hsl(340, 80%, 60%);
+        --text-accent: #ffffff;
+      }
+
+      /* カスタムカラー用ユーティリティクラス */
+      .bg-base-custom {
+        background-color: var(--color-base);
+        color: var(--text-base);
+      }
+      .bg-main-custom {
+        background-color: var(--color-main);
+        color: var(--text-main);
+      }
+      .bg-accent-custom {
+        background-color: var(--color-accent);
+        color: var(--text-accent);
+      }
+      .text-main-custom {
+        color: var(--color-main);
+      }
+      .border-accent-custom {
+        border-color: var(--color-accent);
+      }
+
+      /* スライダーのつまみ（サム）のスタイル調整 */
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #cbd5e1;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      input[type="range"]::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #cbd5e1;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans overflow-hidden">
+    <div class="flex flex-col lg:flex-row h-screen">
+      <!-- 左ペイン：操作パネル -->
+      <div
+        class="w-full lg:w-[400px] h-1/2 lg:h-full overflow-y-auto border-r border-gray-300 bg-gray-50 p-6 shadow-z-10 relative z-10"
+      >
+        <h2 class="text-2xl font-bold mb-2 text-gray-900">配色シミュレーター</h2>
+        <p class="mb-6 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-100">
+          スライダーを動かして、右側のサイトデザインがどう変化するか確認してください。<br />
+          ※「トーン」は明度と彩度の組み合わせによって決まります。
+        </p>
+
+        <!-- 配色サンプル（プリセット）エリア -->
+        <div class="mb-6 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <h3 class="text-lg font-bold text-gray-800 mb-3">配色サンプル（プリセット）</h3>
+
+          <div class="mb-3">
+            <p class="text-xs font-bold text-green-700 mb-2">良い例（適切）</p>
+            <div class="flex flex-wrap gap-2" id="preset-good-container"></div>
+          </div>
+
+          <div class="mb-3">
+            <p class="text-xs font-bold text-red-700 mb-2">悪い例（不適切）</p>
+            <div class="flex flex-wrap gap-2" id="preset-bad-container"></div>
+          </div>
+
+          <div
+            id="preset-description"
+            class="mt-4 text-sm text-gray-700 bg-gray-50 p-3 rounded border border-gray-200 hidden leading-relaxed"
+          ></div>
+        </div>
+
+        <!-- 1. ベースカラー -->
+        <div class="mb-6 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <h3 class="text-lg font-bold text-gray-800 mb-2">1. ベースカラー (Base)</h3>
+          <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+            背景など最も広い面積（約70%）を占めます。通常は明度を高く、彩度を低く設定し、コンテンツの邪魔にならないようにします。
+          </p>
+
+          <div class="flex items-center mb-5">
+            <div
+              id="preview-base"
+              class="w-16 h-16 rounded-lg shadow-inner border border-gray-200 mr-4 transition-colors duration-200"
+            ></div>
+            <div
+              id="text-base-hex"
+              class="text-sm font-mono bg-gray-100 text-gray-700 px-3 py-2 rounded-md border border-gray-200"
+            ></div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>色相 (Hue) - 色み</span>
+                <span id="text-base-h"></span>
+              </div>
+              <input
+                type="range"
+                id="input-base-h"
+                min="0"
+                max="360"
+                oninput="updateColor('base', 'h', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+                style="
+                  background: linear-gradient(
+                    to right,
+                    #ff0000,
+                    #ffff00,
+                    #00ff00,
+                    #00ffff,
+                    #0000ff,
+                    #ff00ff,
+                    #ff0000
+                  );
+                "
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>彩度 (Saturation) - 鮮やかさ</span>
+                <span id="text-base-s"></span>
+              </div>
+              <input
+                type="range"
+                id="input-base-s"
+                min="0"
+                max="100"
+                oninput="updateColor('base', 's', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>明度 (Lightness) - 明るさ</span>
+                <span id="text-base-l"></span>
+              </div>
+              <input
+                type="range"
+                id="input-base-l"
+                min="0"
+                max="100"
+                oninput="updateColor('base', 'l', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. メインカラー -->
+        <div class="mb-6 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <h3 class="text-lg font-bold text-gray-800 mb-2">2. メインカラー (Main)</h3>
+          <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+            サイトの印象を決定するテーマカラー（約25%）。ヘッダーや見出しなど、主要な要素に使用します。
+          </p>
+
+          <div class="flex items-center mb-5">
+            <div
+              id="preview-main"
+              class="w-16 h-16 rounded-lg shadow-inner border border-gray-200 mr-4 transition-colors duration-200"
+            ></div>
+            <div
+              id="text-main-hex"
+              class="text-sm font-mono bg-gray-100 text-gray-700 px-3 py-2 rounded-md border border-gray-200"
+            ></div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>色相 (Hue) - 色み</span>
+                <span id="text-main-h"></span>
+              </div>
+              <input
+                type="range"
+                id="input-main-h"
+                min="0"
+                max="360"
+                oninput="updateColor('main', 'h', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+                style="
+                  background: linear-gradient(
+                    to right,
+                    #ff0000,
+                    #ffff00,
+                    #00ff00,
+                    #00ffff,
+                    #0000ff,
+                    #ff00ff,
+                    #ff0000
+                  );
+                "
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>彩度 (Saturation) - 鮮やかさ</span>
+                <span id="text-main-s"></span>
+              </div>
+              <input
+                type="range"
+                id="input-main-s"
+                min="0"
+                max="100"
+                oninput="updateColor('main', 's', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>明度 (Lightness) - 明るさ</span>
+                <span id="text-main-l"></span>
+              </div>
+              <input
+                type="range"
+                id="input-main-l"
+                min="0"
+                max="100"
+                oninput="updateColor('main', 'l', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. アクセントカラー -->
+        <div class="mb-6 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+          <h3 class="text-lg font-bold text-gray-800 mb-2">3. アクセントカラー (Accent)</h3>
+          <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+            全体の引き締めや、目立たせたいボタンに使用します（約5%）。メインカラーの補色（色相環の反対色）を選ぶと効果的です。
+          </p>
+
+          <div class="flex items-center mb-5">
+            <div
+              id="preview-accent"
+              class="w-16 h-16 rounded-lg shadow-inner border border-gray-200 mr-4 transition-colors duration-200"
+            ></div>
+            <div
+              id="text-accent-hex"
+              class="text-sm font-mono bg-gray-100 text-gray-700 px-3 py-2 rounded-md border border-gray-200"
+            ></div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>色相 (Hue) - 色み</span>
+                <span id="text-accent-h"></span>
+              </div>
+              <input
+                type="range"
+                id="input-accent-h"
+                min="0"
+                max="360"
+                oninput="updateColor('accent', 'h', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+                style="
+                  background: linear-gradient(
+                    to right,
+                    #ff0000,
+                    #ffff00,
+                    #00ff00,
+                    #00ffff,
+                    #0000ff,
+                    #ff00ff,
+                    #ff0000
+                  );
+                "
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>彩度 (Saturation) - 鮮やかさ</span>
+                <span id="text-accent-s"></span>
+              </div>
+              <input
+                type="range"
+                id="input-accent-s"
+                min="0"
+                max="100"
+                oninput="updateColor('accent', 's', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                <span>明度 (Lightness) - 明るさ</span>
+                <span id="text-accent-l"></span>
+              </div>
+              <input
+                type="range"
+                id="input-accent-l"
+                min="0"
+                max="100"
+                oninput="updateColor('accent', 'l', this.value)"
+                class="w-full h-3 rounded-lg appearance-none cursor-pointer border border-gray-300"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右ペイン：プレビュー画面 -->
+      <div
+        class="w-full lg:flex-1 h-1/2 lg:h-full overflow-y-auto relative bg-base-custom transition-colors duration-300 ease-in-out"
+      >
+        <!-- ヘッダー -->
+        <header
+          class="px-6 py-4 flex justify-between items-center shadow-md transition-colors duration-300 sticky top-0 z-20 bg-main-custom"
+        >
+          <div class="flex items-center gap-2 text-xl font-black tracking-wider">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" />
+              <path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+            <span>にこにこ保育園</span>
+          </div>
+          <nav class="hidden md:flex gap-6 font-bold text-sm">
+            <span class="cursor-pointer hover:opacity-80 transition-opacity">園について</span>
+            <span class="cursor-pointer hover:opacity-80 transition-opacity">一日の流れ</span>
+            <span class="cursor-pointer hover:opacity-80 transition-opacity">入園案内</span>
+          </nav>
+          <button
+            class="px-5 py-2 rounded-full font-bold shadow-sm transition-transform hover:scale-105 active:scale-95 text-sm bg-accent-custom"
+          >
+            見学申込
+          </button>
+        </header>
+
+        <!-- ヒーローセクション -->
+        <section class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px]">
+          <img
+            src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+            alt="遊ぶ子供たち"
+            class="w-full h-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center p-6 text-center"
+          >
+            <div
+              class="backdrop-blur-sm bg-white/90 p-8 sm:p-12 rounded-3xl shadow-2xl max-w-3xl transform transition-transform hover:scale-[1.02]"
+            >
+              <h1
+                class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 sm:mb-6 tracking-tight leading-tight text-main-custom"
+              >
+                のびのび、すくすく。<br />
+                笑顔あふれる毎日を。
+              </h1>
+              <p class="text-base sm:text-lg text-gray-700 font-medium">
+                子どもたちの豊かな個性と、無限の可能性を大切に育む保育園です。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- コンテンツセクション -->
+        <section class="max-w-6xl mx-auto py-16 px-6">
+          <div class="text-center mb-16">
+            <h2
+              class="text-3xl font-extrabold inline-block pb-3 border-b-4 border-accent-custom text-main-custom"
+            >
+              当園の3つの特長
+            </h2>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- カード1 -->
+            <div
+              class="bg-white p-8 rounded-2xl shadow-lg text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-100"
+            >
+              <div
+                class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 shadow-md bg-main-custom"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                  <line x1="9" x2="9.01" y1="9" y2="9" />
+                  <line x1="15" x2="15.01" y1="9" y2="9" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-main-custom">のびのび遊ぶ</h3>
+              <p class="text-gray-600 leading-relaxed text-left">
+                広い園庭と自然に囲まれた環境で、毎日元気に体を動かして遊びます。
+              </p>
+            </div>
+            <!-- カード2 -->
+            <div
+              class="bg-white p-8 rounded-2xl shadow-lg text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-100"
+            >
+              <div
+                class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 shadow-md bg-main-custom"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-main-custom">思いやりの心</h3>
+              <p class="text-gray-600 leading-relaxed text-left">
+                異年齢の子どもたちとの関わりを通じて、優しさと社会性を育てます。
+              </p>
+            </div>
+            <!-- カード3 -->
+            <div
+              class="bg-white p-8 rounded-2xl shadow-lg text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-100"
+            >
+              <div
+                class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 shadow-md bg-main-custom"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold mb-4 text-main-custom">豊かな創造力</h3>
+              <p class="text-gray-600 leading-relaxed text-left">
+                工作や音楽、絵本など、さまざまな表現活動を通して感性を磨きます。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- フッター前CTA -->
+        <section
+          class="py-20 px-6 text-center border-t border-gray-200"
+          style="background-color: rgba(255, 255, 255, 0.5)"
+        >
+          <h2 class="text-2xl font-bold mb-8 text-main-custom">
+            見学のご予約・お問い合わせはお気軽に
+          </h2>
+          <button
+            class="px-12 py-5 rounded-full font-bold text-xl shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center justify-center mx-auto gap-3 bg-accent-custom"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            <span>012-3456-7890</span>
+          </button>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      // 状態管理
+      const colors = {
+        base: { h: 50, s: 100, l: 95 },
+        main: { h: 30, s: 90, l: 55 },
+        accent: { h: 340, s: 80, l: 60 },
+      };
+
+      // プリセットデータ
+      const presets = [
+        {
+          id: "good-pop",
+          name: "ポップ（基本）",
+          type: "good",
+          desc: "【良い例】子供向けに明るく、コントラストがはっきりした基本の配色です。",
+          colors: {
+            base: { h: 50, s: 100, l: 95 },
+            main: { h: 30, s: 90, l: 55 },
+            accent: { h: 340, s: 80, l: 60 },
+          },
+        },
+        {
+          id: "good-pastel",
+          name: "パステル",
+          type: "good",
+          desc: "【良い例】全体をペールトーン（淡い色調）でまとめた、優しく安心感のある配色です。",
+          colors: {
+            base: { h: 180, s: 50, l: 95 },
+            main: { h: 200, s: 70, l: 75 },
+            accent: { h: 330, s: 70, l: 80 },
+          },
+        },
+        {
+          id: "good-vivid",
+          name: "ビビッド",
+          type: "good",
+          desc: "【良い例】高彩度で元気な印象。メインとアクセントのコントラストが活発さを強調します。",
+          colors: {
+            base: { h: 0, s: 0, l: 100 },
+            main: { h: 45, s: 100, l: 50 },
+            accent: { h: 200, s: 100, l: 45 },
+          },
+        },
+        {
+          id: "good-natural",
+          name: "ナチュラル",
+          type: "good",
+          desc: "【良い例】自然を連想させるアースカラー。少し彩度を落とし、落ち着いた雰囲気になります。",
+          colors: {
+            base: { h: 80, s: 30, l: 90 },
+            main: { h: 100, s: 40, l: 40 },
+            accent: { h: 25, s: 60, l: 50 },
+          },
+        },
+        {
+          id: "good-marine",
+          name: "マリン",
+          type: "good",
+          desc: "【良い例】同系色の青と緑でまとめた、清潔感と爽やかさのある配色です。",
+          colors: {
+            base: { h: 200, s: 50, l: 95 },
+            main: { h: 190, s: 80, l: 45 },
+            accent: { h: 150, s: 80, l: 40 },
+          },
+        },
+        {
+          id: "bad-similar",
+          name: "同系色で見づらい",
+          type: "bad",
+          desc: "【悪い例】全てが同じような色相・明度で、ボタンや見出しの区別がつきません。",
+          colors: {
+            base: { h: 40, s: 60, l: 80 },
+            main: { h: 45, s: 70, l: 75 },
+            accent: { h: 35, s: 65, l: 70 },
+          },
+        },
+        {
+          id: "bad-contrast",
+          name: "コントラスト不足",
+          type: "bad",
+          desc: "【悪い例】背景と文字の明度差が小さく、可読性が著しく低下しています。",
+          colors: {
+            base: { h: 210, s: 20, l: 80 },
+            main: { h: 210, s: 30, l: 70 },
+            accent: { h: 210, s: 40, l: 75 },
+          },
+        },
+        {
+          id: "bad-dark",
+          name: "子供向けなのに暗い",
+          type: "bad",
+          desc: "【悪い例】明度が低くダークトーンになっており、保育園のコンセプトに合いません。",
+          colors: {
+            base: { h: 0, s: 0, l: 15 },
+            main: { h: 260, s: 30, l: 30 },
+            accent: { h: 0, s: 80, l: 40 },
+          },
+        },
+        {
+          id: "bad-halation",
+          name: "目がチカチカする",
+          type: "bad",
+          desc: "【悪い例】ハレーション。彩度が高い反対色同士がぶつかり、目が疲れます。",
+          colors: {
+            base: { h: 0, s: 100, l: 50 },
+            main: { h: 240, s: 100, l: 50 },
+            accent: { h: 120, s: 100, l: 50 },
+          },
+        },
+        {
+          id: "bad-chaos",
+          name: "まとまりがない",
+          type: "bad",
+          desc: "【悪い例】トーン（明度・彩度の傾向）がバラバラで、視覚的な統一感がありません。",
+          colors: {
+            base: { h: 300, s: 20, l: 80 },
+            main: { h: 60, s: 100, l: 50 },
+            accent: { h: 180, s: 80, l: 20 },
+          },
+        },
+      ];
+
+      // HSLからHEXへ変換する関数
+      function hslToHex(h, s, l) {
+        l /= 100;
+        const a = (s * Math.min(l, 1 - l)) / 100;
+        const f = (n) => {
+          const k = (n + h / 30) % 12;
+          const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color)
+            .toString(16)
+            .padStart(2, "0");
+        };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+      }
+
+      // 入力イベントハンドラ
+      function updateColor(type, prop, value) {
+        colors[type][prop] = parseInt(value, 10);
+        render();
+      }
+
+      // 画面の更新処理
+      function render() {
+        const types = ["base", "main", "accent"];
+
+        types.forEach((type) => {
+          const c = colors[type];
+          const hexStr = hslToHex(c.h, c.s, c.l);
+          // 明度から白/黒のテキストカラーを判定
+          const textCol = c.l < 50 ? "#ffffff" : "#1a1a1a";
+
+          // CSS変数の更新 (これにより右ペインのスタイルが一括で切り替わる)
+          document.documentElement.style.setProperty(`--color-${type}`, hexStr);
+          document.documentElement.style.setProperty(`--text-${type}`, textCol);
+
+          // テキスト表示の更新
+          document.getElementById(`text-${type}-hex`).textContent = hexStr;
+          document.getElementById(`text-${type}-h`).textContent = c.h + "°";
+          document.getElementById(`text-${type}-s`).textContent = c.s + "%";
+          document.getElementById(`text-${type}-l`).textContent = c.l + "%";
+
+          // プレビューボックスの更新
+          document.getElementById(`preview-${type}`).style.backgroundColor = hexStr;
+
+          // inputスライダーの値と背景グラデーションの更新
+          const inputH = document.getElementById(`input-${type}-h`);
+          const inputS = document.getElementById(`input-${type}-s`);
+          const inputL = document.getElementById(`input-${type}-l`);
+
+          inputH.value = c.h;
+          inputS.value = c.s;
+          inputL.value = c.l;
+
+          // 色相(h)の背景は固定のため更新不要
+          // 彩度(s)の背景更新
+          inputS.style.background = `linear-gradient(to right, hsl(${c.h}, 0%, ${c.l}%), hsl(${c.h}, 100%, ${c.l}%))`;
+          // 明度(l)の背景更新
+          inputL.style.background = `linear-gradient(to right, #000000, hsl(${c.h}, ${c.s}%, 50%), #ffffff)`;
+        });
+      }
+
+      // プリセットを適用する関数
+      function applyPreset(presetId) {
+        const preset = presets.find((p) => p.id === presetId);
+        if (!preset) return;
+
+        colors.base = { ...preset.colors.base };
+        colors.main = { ...preset.colors.main };
+        colors.accent = { ...preset.colors.accent };
+
+        // 説明文の表示
+        const descEl = document.getElementById("preset-description");
+        descEl.textContent = preset.desc;
+
+        // 背景色をタイプに応じて変更
+        if (preset.type === "good") {
+          descEl.className =
+            "mt-4 text-sm text-green-800 bg-green-50 p-3 rounded border border-green-200 leading-relaxed";
+        } else {
+          descEl.className =
+            "mt-4 text-sm text-red-800 bg-red-50 p-3 rounded border border-red-200 leading-relaxed font-bold";
+        }
+
+        render();
+      }
+
+      // プリセットボタンを生成する関数
+      function initPresets() {
+        const goodContainer = document.getElementById("preset-good-container");
+        const badContainer = document.getElementById("preset-bad-container");
+
+        presets.forEach((preset) => {
+          const btn = document.createElement("button");
+          btn.textContent = preset.name;
+
+          const baseClasses =
+            "px-3 py-1.5 text-xs font-bold rounded shadow-sm transition-colors duration-200 border";
+          if (preset.type === "good") {
+            btn.className = `${baseClasses} bg-green-50 text-green-700 border-green-200 hover:bg-green-100`;
+            goodContainer.appendChild(btn);
+          } else {
+            btn.className = `${baseClasses} bg-red-50 text-red-700 border-red-200 hover:bg-red-100`;
+            badContainer.appendChild(btn);
+          }
+
+          btn.onclick = () => applyPreset(preset.id);
+        });
+      }
+
+      // 初期化実行
+      document.addEventListener("DOMContentLoaded", () => {
+        initPresets();
+        render();
+      });
+    </script>
+  </body>
+</html>

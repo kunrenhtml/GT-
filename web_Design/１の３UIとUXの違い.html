@@ -1,0 +1,180 @@
+<!doctype html>
+
+<!-- UIのダメな点: 原色使い、枠線が太い、フォントが標準（MS Pゴシック風）、余白（パディング）が不適切、レスポンシブ非対応。
+
+UXの良い点: ページを開いた瞬間に検索窓にフォーカスがある、ショートカットキーが使える、読み込みが皆無（0.1秒以下）、必要な情報が1画面に収まっている。 -->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>在庫管理システム v1.02 (2004/05/12更新)</title>
+    <style>
+      /* UIはあえて古臭く、視認性が悪い配色に設定 */
+      body {
+        background-color: #c0c0c0; /* Windows 95風グレー */
+        font-family: "MS PGothic", "Osaka", sans-serif;
+        font-size: 12px;
+        margin: 10px;
+      }
+      header {
+        background-color: #000080; /* 紺色のヘッダー */
+        color: white;
+        padding: 5px;
+        font-weight: bold;
+        border-bottom: 2px solid #ffffff;
+      }
+      .container {
+        border: 2px inset #ffffff;
+        background-color: white;
+        padding: 15px;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        color: #000;
+      }
+
+      /* フォーム周り：デザインは悪いが、使い勝手（UX）に全振り */
+      .search-area {
+        background-color: #eeeeee;
+        border: 1px solid #808080;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      input[type="text"] {
+        width: 300px;
+        border: 2px inset #fff;
+        padding: 4px;
+        background-color: #ffffcc; /* 入力箇所を強調 */
+      }
+      button {
+        cursor: pointer;
+        padding: 3px 10px;
+        background: #d4d0c8;
+        border: 2px outset #fff;
+      }
+
+      /* テーブル：余白がなく詰まっているが、一覧性は高い */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #000;
+      }
+      th {
+        background-color: #d4d0c8;
+        border: 1px solid #808080;
+        text-align: left;
+        padding: 2px 5px;
+      }
+      td {
+        border: 1px solid #808080;
+        padding: 2px 5px;
+      }
+      tr:nth-child(even) {
+        background-color: #f0f0f0;
+      }
+
+      /* UX向上のための視覚補助 */
+      .highlight {
+        background-color: #ff0 !important;
+        font-weight: bold;
+      }
+      .shortcut-hint {
+        color: #666;
+        font-size: 10px;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>全社共通 在庫検索DB (Node-04)</header>
+
+    <div class="container">
+      <h1>商品在庫 リアルタイム照会</h1>
+
+      <div class="search-area">
+        <label for="searchQuery">検索(S): </label>
+        <input type="text" id="searchQuery" placeholder="商品名または型番を入力..." accesskey="s" />
+        <button id="searchBtn">検索(Enter)</button>
+        <span class="shortcut-hint">※ Alt+S で検索窓にジャンプ</span>
+      </div>
+
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>カテゴリ</th>
+            <th>商品名</th>
+            <th>在庫数</th>
+            <th>ステータス</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <p id="statusMsg" style="margin-top: 5px; color: blue"></p>
+    </div>
+
+    <script>
+      // サンプルデータ
+      const data = [
+        { id: "A001", cat: "PCパーツ", name: "DDR4 16GB RAM", stock: 45, status: "在庫あり" },
+        { id: "A002", cat: "PCパーツ", name: "SSD 500GB NVMe", stock: 12, status: "残りわずか" },
+        { id: "B105", cat: "周辺機器", name: "USB-C ハブ 7in1", stock: 0, status: "欠品中" },
+        {
+          id: "C302",
+          cat: "事務用品",
+          name: "コピー用紙 A4 500枚",
+          stock: 120,
+          status: "在庫あり",
+        },
+      ];
+
+      const input = document.getElementById("searchQuery");
+      const tbody = document.getElementById("tableBody");
+      const statusMsg = document.getElementById("statusMsg");
+
+      // UXポイント1：ロード完了後、即座にフォーカスを当てる
+      window.onload = () => input.focus();
+
+      function renderTable(filter = "") {
+        const startTime = performance.now();
+        tbody.innerHTML = "";
+
+        const filtered = data.filter(
+          (item) =>
+            item.name.toLowerCase().includes(filter.toLowerCase()) ||
+            item.id.toLowerCase().includes(filter.toLowerCase()),
+        );
+
+        filtered.forEach((item) => {
+          const row = tbody.insertRow();
+          row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.cat}</td>
+                <td>${item.name}</td>
+                <td style="color: ${item.stock < 20 ? "red" : "black"}">${item.stock}</td>
+                <td>${item.status}</td>
+            `;
+        });
+
+        const endTime = performance.now();
+        statusMsg.innerText = `${filtered.length}件ヒットしました (${(endTime - startTime).toFixed(4)}ms)`;
+      }
+
+      // UXポイント2：インクリメンタルサーチ（入力のたびに即時反映）
+      input.addEventListener("input", (e) => {
+        renderTable(e.target.value);
+      });
+
+      // UXポイント3：Enterキーで最初の項目を選択する等の拡張性
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && tbody.rows.length > 0) {
+          alert(`${tbody.rows[0].cells[2].innerText} の詳細画面へ移動します（UX：最小の打鍵数）`);
+        }
+      });
+
+      // 初期表示
+      renderTable();
+    </script>
+  </body>
+</html>

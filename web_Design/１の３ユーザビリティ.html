@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web UI Comparison: Good vs Bad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 使いづらい例のための特定スタイル */
+      .bad-ui-container {
+        font-family: "MS UI Gothic", "serif";
+        background-color: #ffff00; /* 目が痛い黄色 */
+        color: #ff00ff; /* 読みにくいマゼンタ */
+        width: 1200px; /* 固定幅（レスポンシブではない） */
+      }
+      .bad-button {
+        background-color: #00ff00;
+        border: 5px outset #fff;
+        padding: 2px;
+        cursor: pointer;
+        font-size: 10px;
+      }
+      .bad-input {
+        border: 1px solid #000;
+        background-color: #fff;
+        color: #000;
+        width: 50px;
+      }
+
+      /* 共通スタイル */
+      .comparison-section {
+        display: none;
+      }
+      .active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans text-gray-900">
+    <!-- ナビゲーション兼切り替えスイッチ -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">UI比較デモ</h1>
+        <div class="flex space-x-2 bg-gray-200 p-1 rounded-lg">
+          <button
+            onclick="showSection('bad')"
+            id="btn-bad"
+            class="px-4 py-2 rounded-md transition text-sm font-medium"
+          >
+            使いづらい例 (Bad)
+          </button>
+          <button
+            onclick="showSection('good')"
+            id="btn-good"
+            class="px-4 py-2 rounded-md transition text-sm font-medium bg-blue-600 text-white shadow"
+          >
+            使いやすい例 (Good)
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mt-8 pb-20">
+      <!-- --- 使いづらい例 (Bad UI) --- -->
+      <section id="bad-section" class="comparison-section mx-auto overflow-x-auto">
+        <div class="bad-ui-container p-4">
+          <marquee>最新情報：サーバーメンテナンスのお知らせ（2024/01/01）</marquee>
+          <h1 style="font-size: 40px; text-decoration: underline">ｻｰﾋﾞｽの案内</h1>
+          <p>
+            ここはサービスを説明する場所ですが文字が小さくて読みにくく改行もされていないため非常にストレスが溜まる設計になっています。また背景色と文字色のコントラストが低いため視認性が最悪です。固定幅なのでスマホで見ると横スクロールが発生します。
+          </p>
+
+          <div style="margin-top: 50px">
+            <h3>お申し込みはこちら</h3>
+            なまえ：<input type="text" class="bad-input" /> <br />
+            めーる：<input type="text" class="bad-input" /> <br />
+            <button class="bad-button" onclick="alert('送信しました（デモ）')">ｸﾘｯｸして送信</button>
+          </div>
+
+          <div style="margin-top: 100px; border: 10px dotted red">
+            <p>
+              広告：ここに関係ない情報がたくさん並んでいます。バナー広告だらけ。バナー広告だらけ。バナー広告だらけ。
+            </p>
+          </div>
+        </div>
+
+        <!-- 解説パネル -->
+        <div class="max-w-4xl mx-auto mt-10 p-6 bg-red-50 border-l-4 border-red-500">
+          <h2 class="text-red-800 font-bold mb-2">Bad UI の問題点</h2>
+          <ul class="list-disc list-inside space-y-1 text-red-700 text-sm">
+            <li><b>視認性の欠如:</b> 背景と文字のコントラストが低く、目が疲れる。</li>
+            <li><b>非レスポンシブ:</b> 固定幅（1200px）のため、モバイル端末で操作不能。</li>
+            <li><b>タイポグラフィの欠如:</b> 適切なフォントサイズ、行間、余白がない。</li>
+            <li><b>不明確なCTA:</b> 送信ボタンが小さく、クリック領域が不足している。</li>
+            <li>
+              <b>古い慣習:</b> marqueeタグや不必要な装飾（点線の枠など）が情報の整理を妨げている。
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- --- 使いやすい例 (Good UI) --- -->
+      <section id="good-section" class="comparison-section active max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <!-- ヒーローセクション -->
+          <div class="bg-blue-600 px-8 py-12 text-white text-center">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-4">次世代のクラウドソリューション</h2>
+            <p class="text-blue-100 text-lg max-w-2xl mx-auto">
+              直感的な操作と圧倒的なスピードで、あなたのビジネスを加速させます。
+            </p>
+          </div>
+
+          <!-- コンテンツ -->
+          <div class="p-8 md:p-12 space-y-12">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">なぜ選ばれるのか？</h3>
+                <p class="text-gray-600 leading-relaxed">
+                  適切な余白（ホワイトスペース）を確保し、情報の優先順位を明確にすることで、ユーザーが必要な情報に迷わずアクセスできる設計を重視しています。
+                </p>
+              </div>
+              <div
+                class="bg-gray-100 h-48 rounded-xl flex items-center justify-center text-gray-400"
+              >
+                [イメージ画像：グラフや統計]
+              </div>
+            </div>
+
+            <!-- フォームセクション -->
+            <div class="bg-gray-50 p-6 md:p-8 rounded-xl border border-gray-200">
+              <h3 class="text-xl font-bold mb-6 text-gray-800 text-center">
+                無料トライアルにお申し込み
+              </h3>
+              <form
+                onsubmit="
+                  event.preventDefault();
+                  showModal();
+                "
+                class="space-y-4 max-w-md mx-auto"
+              >
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-1">お名前</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="山田 太郎"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-1"
+                    >メールアドレス</label
+                  >
+                  <input
+                    type="email"
+                    required
+                    placeholder="example@mail.com"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition transform active:scale-95"
+                >
+                  今すぐ無料で始める
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 解説パネル -->
+        <div class="mt-10 p-6 bg-green-50 border-l-4 border-green-500">
+          <h2 class="text-green-800 font-bold mb-2">Good UI のポイント</h2>
+          <ul class="list-disc list-inside space-y-1 text-green-700 text-sm">
+            <li><b>情報の階層化:</b> 見出し、本文、ボタンの役割が視覚的にすぐ理解できる。</li>
+            <li><b>アクセシビリティ:</b> 十分なコントラストと適切なフォントサイズを確保。</li>
+            <li>
+              <b>レスポンシブデザイン:</b>
+              画面サイズに応じてレイアウトが最適化される（Tailwindを使用）。
+            </li>
+            <li>
+              <b>インタラクション:</b>
+              ボタンのホバー効果やクリック時の反応など、フィードバックが明確。
+            </li>
+            <li>
+              <b>入力負荷の軽減:</b> フォームにプレースホルダーや適切なラベルが配置されている。
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- モーダル（alertの代わり） -->
+    <div
+      id="modal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-[100] px-4"
+    >
+      <div class="bg-white p-8 rounded-2xl max-w-sm w-full text-center">
+        <div
+          class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">送信完了</h3>
+        <p class="text-gray-600 mb-6">お申し込みを受け付けました。担当者よりご連絡いたします。</p>
+        <button
+          onclick="hideModal()"
+          class="w-full bg-gray-900 text-white py-2 rounded-lg font-bold"
+        >
+          閉じる
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function showSection(type) {
+        const bad = document.getElementById("bad-section");
+        const good = document.getElementById("good-section");
+        const btnBad = document.getElementById("btn-bad");
+        const btnGood = document.getElementById("btn-good");
+
+        if (type === "bad") {
+          bad.classList.add("active");
+          good.classList.remove("active");
+          btnBad.classList.add("bg-red-600", "text-white", "shadow");
+          btnBad.classList.remove("text-gray-700");
+          btnGood.classList.remove("bg-blue-600", "text-white", "shadow");
+          document.body.style.backgroundColor = "#333";
+        } else {
+          bad.classList.remove("active");
+          good.classList.add("active");
+          btnGood.classList.add("bg-blue-600", "text-white", "shadow");
+          btnBad.classList.remove("bg-red-600", "text-white", "shadow");
+          document.body.style.backgroundColor = "#f3f4f6";
+        }
+      }
+
+      function showModal() {
+        document.getElementById("modal").classList.remove("hidden");
+      }
+
+      function hideModal() {
+        document.getElementById("modal").classList.add("hidden");
+      }
+
+      // 初期化
+      showSection("good");
+    </script>
+  </body>
+</html>
