@@ -1,233 +1,289 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>訓練校 学習サイト</title>
-  <style>
-    /* ===== リセット & ベース ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>訓練校 学習サイト</title>
+    <style>
+      /* ===== リセット & ベース ===== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      background: #f5f7fa;
-      color: #333;
-      line-height: 1.7;
-    }
+      body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        line-height: 1.7;
+      }
 
-    a { text-decoration: none; color: inherit; }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-    /* ===== ヘッダー ===== */
-    header {
-      background: #2c3e50;
-      color: #fff;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+      /* ===== ヘッダー ===== */
+      header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-    header .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      letter-spacing: 0.05em;
-    }
+      header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+      }
 
-    header .logo span {
-      color: #5dade2;
-    }
+      header .logo span {
+        color: #5dade2;
+      }
 
-    /* ===== ヒーローエリア ===== */
-    .hero {
-      background: linear-gradient(135deg, #2c3e50 0%, #3d6b8f 100%);
-      color: #fff;
-      text-align: center;
-      padding: 60px 20px;
-    }
+      /* ===== ヒーローエリア ===== */
+      .hero {
+        background: linear-gradient(135deg, #2c3e50 0%, #3d6b8f 100%);
+        color: #fff;
+        text-align: center;
+        padding: 60px 20px;
+      }
 
-    .hero h1 {
-      font-size: 2rem;
-      margin-bottom: 12px;
-      font-weight: bold;
-    }
+      .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        font-weight: bold;
+      }
 
-    .hero p {
-      font-size: 1rem;
-      opacity: 0.85;
-      max-width: 540px;
-      margin: 0 auto;
-    }
+      .hero p {
+        font-size: 1rem;
+        opacity: 0.85;
+        max-width: 540px;
+        margin: 0 auto;
+      }
 
-    /* ===== メインコンテンツ ===== */
-    main {
-      max-width: 860px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
+      /* ===== メインコンテンツ ===== */
+      main {
+        max-width: 860px;
+        margin: 50px auto;
+        padding: 0 20px;
+      }
 
-    /* ===== セクション共通 ===== */
-    .section-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #2c3e50;
-      border-left: 5px solid #5dade2;
-      padding-left: 12px;
-      margin-bottom: 14px;
-    }
+      /* ===== セクション共通 ===== */
+      .section-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #2c3e50;
+        border-left: 5px solid #5dade2;
+        padding-left: 12px;
+        margin-bottom: 14px;
+      }
 
-    .section-desc {
-      font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 28px;
-      line-height: 1.8;
-    }
+      .section-desc {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 28px;
+        line-height: 1.8;
+      }
 
-    /* ===== コースセクション ===== */
-    .course-section {
-      background: #fff;
-      border-radius: 10px;
-      padding: 32px;
-      margin-bottom: 40px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-    }
+      /* ===== コースセクション ===== */
+      .course-section {
+        background: #fff;
+        border-radius: 10px;
+        padding: 32px;
+        margin-bottom: 40px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+      }
 
-    .course-section h2 {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #2980b9;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #d6eaf8;
-    }
+      .course-section h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2980b9;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #d6eaf8;
+      }
 
-    /* ===== カードグリッド ===== */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-top: 20px;
-    }
+      /* ===== カードグリッド ===== */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-top: 20px;
+      }
 
-    .card {
-      background: #f0f7ff;
-      border: 1px solid #d0e8f9;
-      border-radius: 8px;
-      padding: 22px 18px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+      .card {
+        background: #f0f7ff;
+        border: 1px solid #d0e8f9;
+        border-radius: 8px;
+        padding: 22px 18px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
 
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 18px rgba(41,128,185,0.15);
-    }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 18px rgba(41, 128, 185, 0.15);
+      }
 
-    .card .card-icon {
-      font-size: 1.8rem;
-    }
+      .card .card-icon {
+        font-size: 1.8rem;
+      }
 
-    .card .card-title {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #1a5276;
-    }
+      .card .card-title {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #1a5276;
+      }
 
-    .card .card-body {
-      font-size: 0.85rem;
-      color: #555;
-    }
+      .card .card-body {
+        font-size: 0.85rem;
+        color: #555;
+      }
 
-    .card .card-link {
-      display: inline-block;
-      margin-top: auto;
-      padding: 7px 16px;
-      background: #2980b9;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-align: center;
-      transition: background 0.2s;
-    }
+      .card .card-link {
+        display: inline-block;
+        margin-top: auto;
+        padding: 7px 16px;
+        background: #2980b9;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        text-align: center;
+        transition: background 0.2s;
+      }
 
-    .card .card-link:hover {
-      background: #1a6394;
-    }
+      .card .card-link:hover {
+        background: #1a6394;
+      }
 
-    /* ===== フッター ===== */
-    footer {
-      text-align: center;
-      padding: 24px;
-      font-size: 0.8rem;
-      color: #999;
-      border-top: 1px solid #e0e0e0;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
+      /* ===== フッター ===== */
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 0.8rem;
+        color: #999;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">訓練校 <span>学習サイト</span></div>
+    </header>
 
-  <header>
-    <div class="logo">訓練校 <span>学習サイト</span></div>
-  </header>
-
-  <div class="hero">
-    <h1>ようこそ、学習サイトへ</h1>
-    <p>このサイトでは、各コースの学習資料をまとめています。<br>学びたいコースを選んで、ページを開いてみましょう。</p>
-  </div>
-
-  <main>
-
-    <!-- Webデザインコース -->
-    <section class="course-section">
-      <div class="section-title">Webデザインコース</div>
-      <p class="section-desc">
-        Webデザインは、見た目の美しさだけでなく、<strong>使いやすさ</strong>や<strong>ユーザーの体験</strong>を考えることが大切です。
-        このコースでは、デザインの基本的な考え方から、実際の配色の技術までを学びます。<br>
-        以下の3つのトピックから、学習を進めてみましょう。
+    <div class="hero">
+      <h1>ようこそ、学習サイトへ</h1>
+      <p>
+        このサイトでは、各コースの学習資料をまとめています。<br />学びたいコースを選んで、ページを開いてみましょう。
       </p>
+    </div>
 
-      <h2>学習トピック一覧</h2>
+    <main>
+      <!-- Webデザインコース -->
+      <section class="course-section">
+        <div class="section-title">Webデザインコース</div>
+        <p class="section-desc">
+          Webデザインは、見た目の美しさだけでなく、<strong>使いやすさ</strong>や<strong>ユーザーの体験</strong>を考えることが大切です。
+          このコースでは、デザインの基本的な考え方から、実際の配色の技術までを学びます。<br />
+          以下の3つのトピックから、学習を進めてみましょう。
+        </p>
 
-      <div class="card-grid">
+        <h2>学習トピック一覧</h2>
 
-        <div class="card">
-          <div class="card-icon">🖥️</div>
-          <div class="card-title">UI と UX の違い</div>
-          <div class="card-body">
-            見た目（UI）と使い心地（UX）はどう違うのか、具体例を通して学びます。
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🖥️</div>
+            <div class="card-title">UI と UX の違い</div>
+            <div class="card-body">
+              見た目（UI）と使い心地（UX）はどう違うのか、具体例を通して学びます。
+            </div>
+            <a class="card-link" href="web_Design/１の３UIとUXの違い.html">学習する →</a>
           </div>
-          <a class="card-link" href="web_Design/１の３UIとUXの違い.html">学習する →</a>
-        </div>
 
-        <div class="card">
-          <div class="card-icon">🧭</div>
-          <div class="card-title">ユーザビリティ</div>
-          <div class="card-body">
-            使いやすいWebサイトとはどんなものか、ユーザビリティの原則を学びます。
+          <div class="card">
+            <div class="card-icon">🧭</div>
+            <div class="card-title">ユーザビリティ</div>
+            <div class="card-body">
+              使いやすいWebサイトとはどんなものか、ユーザビリティの原則を学びます。
+            </div>
+            <a class="card-link" href="web_Design/１の３ユーザビリティ.html">学習する →</a>
           </div>
-          <a class="card-link" href="web_Design/１の３ユーザビリティ.html">学習する →</a>
-        </div>
 
-        <div class="card">
-          <div class="card-icon">🎨</div>
-          <div class="card-title">上手に配色しよう</div>
-          <div class="card-body">
-            色の組み合わせ方や、印象に合った配色の選び方を学びます。
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <div class="card-title">上手に配色しよう</div>
+            <div class="card-body">色の組み合わせ方や、印象に合った配色の選び方を学びます。</div>
+            <a class="card-link" href="web_Design/3の８上手に配色しよう.html">学習する →</a>
           </div>
-          <a class="card-link" href="web_Design/3の８上手に配色しよう.html">学習する →</a>
+
+          <div class="card">
+            <div class="card-icon">✨</div>
+            <div class="card-title">CSSアニメーション</div>
+            <div class="card-body">アニメーションの種類やタイミング関数など、動きの作り方を学びます。</div>
+            <a class="card-link" href="web_Design/anime.html">学習する →</a>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📐</div>
+            <div class="card-title">position と z-index</div>
+            <div class="card-body">絶対配置と重なり順の仕組みをインタラクティブに体験しながら学びます。</div>
+            <a class="card-link" href="web_Design/zindexAndRerathibu.html">学習する →</a>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📏</div>
+            <div class="card-title">CSS単位プレイグラウンド</div>
+            <div class="card-body">px, em, rem, %, vw, vh などの単位をリアルタイムで試して違いを体験します。</div>
+            <a class="card-link" href="web_Design/css-units.html">学習する →</a>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🔤</div>
+            <div class="card-title">Googleフォント20選</div>
+            <div class="card-body">おすすめのGoogleフォント20種を実例付きで紹介。コピペで使えるCSSコード付きです。</div>
+            <a class="card-link" href="web_Design/google-fonts.html">学習する →</a>
+          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <!-- サイト比較セクション -->
+      <section class="course-section">
+        <div class="section-title">デザインと分かりやすさの比較</div>
+        <p class="section-desc">
+          デザインが美しいだけではなく、<strong>情報が伝わること</strong>が大切です。<br />
+          以下の2つのサイトを見比べて、デザインとユーザビリティの関係を考えてみましょう。
+        </p>
 
-  </main>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🌟</div>
+            <div class="card-title">デザインはいい・でも分かりにくい</div>
+            <div class="card-body">見た目はおしゃれでかっこいいが、情報が伝わりにくいサイトの例です。</div>
+            <a class="card-link" href="web_Design/g-and-t-school/index.html">見てみる →</a>
+          </div>
 
-  <footer>
-    &copy; 2026 訓練校 学習サイト
-  </footer>
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">分かりやすい・でもデザインは普通</div>
+            <div class="card-body">情報は整理されていて分かりやすいが、デザインがシンプルすぎる例です。</div>
+            <a class="card-link" href="web_Design/gt-bad-example/index.html">見てみる →</a>
+          </div>
+        </div>
+      </section>
+    </main>
 
-</body>
+    <footer>&copy; 2026 訓練校 学習サイト</footer>
+  </body>
 </html>
