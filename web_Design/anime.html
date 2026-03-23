@@ -1,0 +1,1853 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Animation Playground</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f0f4ff;
+        --bg2: #e4eaff;
+        --white: #ffffff;
+        --card: #ffffff;
+        --border: #d0d9f5;
+        --text: #1e2260;
+        --muted: #6b7ab8;
+        --accent: #4f46e5;
+        --accent2: #0ea5e9;
+        --accent3: #f59e0b;
+        --green: #10b981;
+        --red: #ef4444;
+        --pink: #ec4899;
+        --shadow: 0 4px 24px rgba(79, 70, 229, 0.1);
+        --shadow-lg: 0 8px 40px rgba(79, 70, 229, 0.16);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        min-height: 100vh;
+      }
+
+      /* HEADER */
+      header {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0ea5e9 100%);
+        padding: 40px 48px 32px;
+        position: relative;
+        overflow: hidden;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E");
+      }
+      .header-inner {
+        position: relative;
+      }
+      .header-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 52px);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.1;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      }
+      .subtitle {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 15px;
+        margin-top: 8px;
+        font-weight: 600;
+      }
+      .float-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: floatC 6s ease-in-out infinite;
+      }
+      .float-circle:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        top: -20px;
+        right: 10%;
+        animation-delay: 0s;
+      }
+      .float-circle:nth-child(2) {
+        width: 50px;
+        height: 50px;
+        top: 20px;
+        right: 25%;
+        animation-delay: 1s;
+      }
+      .float-circle:nth-child(3) {
+        width: 120px;
+        height: 120px;
+        bottom: -40px;
+        right: 5%;
+        animation-delay: 2s;
+      }
+      @keyframes floatC {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-16px) rotate(10deg);
+        }
+      }
+
+      /* NAV */
+      nav {
+        background: var(--white);
+        border-bottom: 2px solid var(--border);
+        padding: 0 48px;
+        display: flex;
+        gap: 2px;
+        overflow-x: auto;
+        box-shadow: 0 2px 12px rgba(79, 70, 229, 0.06);
+      }
+      nav button {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-family: "Nunito", sans-serif;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        padding: 14px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+        margin-bottom: -2px;
+      }
+      nav button.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      nav button:hover:not(.active) {
+        color: var(--text);
+      }
+
+      /* SECTIONS */
+      .section {
+        display: none;
+        padding: 36px 48px;
+      }
+      .section.active {
+        display: block;
+      }
+      .sec-title {
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .sec-desc {
+        color: var(--muted);
+        font-size: 13px;
+        font-family: "JetBrains Mono", monospace;
+        background: var(--bg2);
+        border-left: 3px solid var(--accent);
+        padding: 8px 14px;
+        border-radius: 0 8px 8px 0;
+        display: inline-block;
+        margin-bottom: 28px;
+      }
+
+      /* CARD */
+      .card {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+        transition:
+          box-shadow 0.2s,
+          border-color 0.2s,
+          transform 0.2s;
+      }
+      .card:hover {
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .card-label {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 16px;
+        font-family: "JetBrains Mono", monospace;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-label::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* STAGE */
+      .stage {
+        background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+      }
+      .dot {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* CONTROLS */
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .ctrl-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .ctrl-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        width: 110px;
+        flex-shrink: 0;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .ctrl-value {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent3);
+        width: 56px;
+        text-align: right;
+        flex-shrink: 0;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(245, 158, 11, 0.12);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        flex: 1;
+        height: 6px;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 3px solid var(--accent);
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+      }
+      select {
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 8px;
+        flex: 1;
+        outline: none;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      select:focus {
+        border-color: var(--accent);
+      }
+      .btn-play {
+        background: linear-gradient(135deg, var(--accent), #7c3aed);
+        border: none;
+        color: #fff;
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 13px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        width: 100%;
+        margin-top: 4px;
+      }
+      .btn-play:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+      }
+      .btn-play:active {
+        transform: translateY(0);
+      }
+
+      /* CODE */
+      .code-block {
+        background: #1e1e3f;
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        line-height: 1.9;
+        color: #a8b4f8;
+        overflow-x: auto;
+        margin-top: 14px;
+        white-space: pre;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .ck {
+        color: #79d4f5;
+      }
+      .cv {
+        color: #ffd580;
+      }
+      .cm {
+        color: #636da6;
+      }
+      .cs {
+        color: #c792ea;
+      }
+
+      /* KEYFRAMES */
+      .kf-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .kf-item {
+        background: var(--card);
+        border: 2px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 12px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .kf-item:hover {
+        border-color: var(--accent);
+        background: var(--bg2);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+      }
+      .kf-item.active {
+        border-color: var(--accent);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(14, 165, 233, 0.08));
+        box-shadow: var(--shadow-lg);
+      }
+      .kf-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+      .kf-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .kf-hint {
+        font-size: 10px;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* TRANSFORM */
+      .tf-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 16px;
+      }
+      .tf-card {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 14px;
+        padding: 22px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: all 0.25s;
+        cursor: default;
+        position: relative;
+        overflow: hidden;
+      }
+      .tf-card::after {
+        content: "hover →";
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 9px;
+        color: var(--muted);
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .tf-card:hover {
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent2);
+        transform: translateY(-3px);
+      }
+      .tf-stage-s {
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+      .tf-box {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        font-weight: 600;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .tf-card:hover .tf-translate {
+        transform: translate(18px, -12px);
+      }
+      .tf-card:hover .tf-scale {
+        transform: scale(1.6);
+      }
+      .tf-card:hover .tf-rotate {
+        transform: rotate(135deg);
+      }
+      .tf-card:hover .tf-skew {
+        transform: skew(20deg, 5deg);
+      }
+      .tf-card:hover .tf-scaleX {
+        transform: scaleX(0.35);
+      }
+      .tf-card:hover .tf-rotateY {
+        transform: rotateY(65deg);
+      }
+      .tf-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .tf-code {
+        font-size: 10px;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--accent);
+        background: rgba(79, 70, 229, 0.07);
+        padding: 3px 8px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+
+      /* TIMING */
+      .timing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 14px;
+      }
+      .timing-card {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 14px;
+        padding: 18px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: var(--shadow);
+      }
+      .timing-card:hover {
+        border-color: var(--accent2);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+      .timing-track {
+        height: 40px;
+        background: var(--bg2);
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 12px;
+        border: 1px solid var(--border);
+      }
+      .timing-ball {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent2), var(--green));
+        top: 50%;
+        transform: translateY(-50%);
+        left: 6px;
+        box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+      }
+      .t-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .t-desc {
+        font-size: 10px;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* PERFORMANCE */
+      .perf-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+      .perf-card {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+      }
+      .perf-card.bad {
+        border: 2px solid #fca5a5;
+        background: linear-gradient(135deg, #fff5f5, #fff);
+      }
+      .perf-card.good {
+        border: 2px solid #6ee7b7;
+        background: linear-gradient(135deg, #f0fdf4, #fff);
+      }
+      .perf-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-bottom: 14px;
+      }
+      .perf-badge.bad {
+        background: #fee2e2;
+        color: var(--red);
+      }
+      .perf-badge.good {
+        background: #d1fae5;
+        color: var(--green);
+      }
+      .perf-stage {
+        height: 80px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        overflow: hidden;
+      }
+      .perf-card.bad .perf-stage {
+        background: #fff0f0;
+        border: 1px solid #fca5a5;
+      }
+      .perf-card.good .perf-stage {
+        background: #f0fff8;
+        border: 1px solid #6ee7b7;
+      }
+      .perf-item-bad {
+        width: 40px;
+        height: 40px;
+        background: var(--red);
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        animation: badA 2s ease-in-out infinite;
+      }
+      @keyframes badA {
+        0%,
+        100% {
+          width: 40px;
+          margin-left: 0;
+        }
+        50% {
+          width: 80px;
+          margin-left: 20px;
+        }
+      }
+      .perf-item-good {
+        width: 40px;
+        height: 40px;
+        background: var(--green);
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        animation: goodA 2s ease-in-out infinite;
+      }
+      @keyframes goodA {
+        0%,
+        100% {
+          transform: translateX(0) scale(1);
+        }
+        50% {
+          transform: translateX(20px) scale(1.3);
+        }
+      }
+      .perf-text {
+        font-size: 12px;
+        color: #6b7280;
+        font-family: "JetBrains Mono", monospace;
+        line-height: 1.7;
+      }
+      .perf-title {
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .chip {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .chip.good {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .chip.warn {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .chip.tip {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      /* PLAYGROUND */
+      .pg-wrap {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
+      }
+      @media (max-width: 800px) {
+        .pg-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      .pg-stage {
+        background: linear-gradient(135deg, var(--bg), var(--bg2));
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        min-height: 260px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .pg-target {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 8px 28px rgba(79, 70, 229, 0.4);
+      }
+      .pg-panel {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 24px;
+        border: 1.5px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      .pg-panel h3 {
+        font-size: 16px;
+        font-weight: 900;
+        margin-bottom: 18px;
+        color: var(--text);
+      }
+      .ctrl-group {
+        margin-bottom: 18px;
+      }
+      .ctrl-group-title {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .ctrl-group-title::before {
+        content: "";
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* KEYFRAME DEFS */
+      @keyframes demo-fadein {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes demo-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes demo-bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        40% {
+          transform: translateY(-30px) scale(0.95);
+        }
+        60% {
+          transform: translateY(-20px) scale(1.05);
+        }
+      }
+      @keyframes demo-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.7;
+        }
+      }
+      @keyframes demo-shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-10px);
+        }
+        40% {
+          transform: translateX(10px);
+        }
+        60% {
+          transform: translateX(-6px);
+        }
+        80% {
+          transform: translateX(6px);
+        }
+      }
+      @keyframes demo-flip {
+        0% {
+          transform: rotateY(0);
+        }
+        50% {
+          transform: rotateY(90deg);
+        }
+        100% {
+          transform: rotateY(0);
+        }
+      }
+
+      .a-fadein {
+        animation: demo-fadein var(--dur, 0.8s) var(--ease, ease) var(--del, 0s) var(--iter, 1)
+          forwards;
+      }
+      .a-spin {
+        animation: demo-spin var(--dur, 1s) linear var(--del, 0s) var(--iter, infinite);
+      }
+      .a-bounce {
+        animation: demo-bounce var(--dur, 1s) ease var(--del, 0s) var(--iter, infinite);
+      }
+      .a-pulse {
+        animation: demo-pulse var(--dur, 1s) ease-in-out var(--del, 0s) var(--iter, infinite);
+      }
+      .a-shake {
+        animation: demo-shake var(--dur, 0.5s) ease var(--del, 0s) var(--iter, 1);
+      }
+      .a-flip {
+        animation: demo-flip var(--dur, 1.2s) ease-in-out var(--del, 0s) var(--iter, infinite);
+      }
+
+      /* EXPLAIN BOX */
+      .explain {
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        border: 1.5px solid #fcd34d;
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .explain-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+        line-height: 1.3;
+      }
+      .explain-text {
+        font-size: 13px;
+        color: #78350f;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+      .explain-text strong {
+        color: #92400e;
+        font-weight: 900;
+      }
+      .card-explain {
+        font-size: 12px;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 14px;
+        padding: 10px 14px;
+        background: var(--bg);
+        border-radius: 8px;
+        border-left: 3px solid var(--border);
+      }
+      .card-explain strong {
+        color: var(--text);
+        font-weight: 800;
+      }
+      .kf-explain {
+        font-size: 12px;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        padding: 12px 16px;
+        background: var(--bg);
+        border-radius: 10px;
+        border-left: 3px solid var(--accent2);
+      }
+      .kf-explain strong {
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      @media (max-width: 600px) {
+        header,
+        nav,
+        .section {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .perf-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="float-circle"></div>
+      <div class="float-circle"></div>
+      <div class="float-circle"></div>
+      <div class="header-inner">
+        <div class="header-badge">// Interactive Playground</div>
+        <h1>CSS Animation 🎨</h1>
+        <p class="subtitle">触って体感する！スライダーを動かしてアニメーションを理解しよう</p>
+      </div>
+    </header>
+
+    <nav>
+      <button class="active" onclick="showTab('animation')">🎛 animation</button>
+      <button onclick="showTab('keyframes')">✨ @keyframes</button>
+      <button onclick="showTab('transform')">🔄 transform</button>
+      <button onclick="showTab('timing')">⏱ timing-function</button>
+      <button onclick="showTab('performance')">⚡ パフォーマンス</button>
+      <button onclick="showTab('playground')">🎮 自由に試す</button>
+    </nav>
+
+    <!-- TAB 1 -->
+    <section class="section active" id="tab-animation">
+      <div class="sec-title">animation プロパティ</div>
+      <div class="sec-desc">スライダーを動かすとアニメーションがリアルタイムで変化します ✨</div>
+
+      <div class="explain">
+        <div class="explain-icon">💡</div>
+        <div class="explain-text">
+          <strong>animation とは？</strong><br />
+          CSS
+          だけで要素を動かすための機能です。「どのくらいの時間で」「何回」「どんな速さで」動かすかを細かく設定できます。
+          下の6つのカードでそれぞれのプロパティを触って確認してみましょう！
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">animation-duration</div>
+          <div class="card-explain">
+            ⏱ <strong>再生時間</strong>を決める。短いと速く、長いとゆっくり動く。単位は秒（s）。
+          </div>
+          <div class="stage">
+            <div class="dot" id="dot-dur" style="animation: demo-spin 1s linear infinite"></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">duration</span>
+              <input
+                type="range"
+                id="rng-dur"
+                min="0.1"
+                max="5"
+                step="0.1"
+                value="1"
+                oninput="
+                  setDur(this.value);
+                  fillRange(this);
+                "
+              />
+              <span class="ctrl-value" id="v-dur">1.0s</span>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation</span>: spin
+            <span class="cv" id="c-dur">1.0s</span> linear infinite; }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">animation-delay</div>
+          <div class="card-explain">
+            ⏳
+            <strong>開始を遅らせる</strong
+            >時間。ページ表示後すぐ動かしたくないときに使う。「再生」ボタンで試そう。
+          </div>
+          <div class="stage">
+            <div
+              class="dot"
+              id="dot-del"
+              style="animation: demo-fadein 0.8s ease 0s 1 forwards"
+            ></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">delay</span>
+              <input
+                type="range"
+                id="rng-del"
+                min="0"
+                max="3"
+                step="0.1"
+                value="0"
+                oninput="
+                  setDel(this.value);
+                  fillRange(this);
+                "
+              />
+              <span class="ctrl-value" id="v-del">0.0s</span>
+            </div>
+            <button class="btn-play" onclick="replayDel()">▶ 再生して確認</button>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation</span>: fadeIn 0.8s ease
+            <span class="cv" id="c-del">0.0s</span> forwards; }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">animation-iteration-count</div>
+          <div class="card-explain">
+            🔁 <strong>何回繰り返すか</strong>を指定。<code>infinite</code>
+            にすると永遠にループする。ローディングアニメなどに使う。
+          </div>
+          <div class="stage">
+            <div class="dot" id="dot-iter" style="animation: demo-bounce 0.8s ease 0s 1"></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">iteration</span>
+              <select
+                id="sel-iter"
+                onchange="document.getElementById('c-iter').textContent = this.value"
+              >
+                <option value="1">1 回</option>
+                <option value="2">2 回</option>
+                <option value="3">3 回</option>
+                <option value="infinite">infinite（無限）</option>
+              </select>
+            </div>
+            <button class="btn-play" onclick="replayIter()">▶ 再生して確認</button>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation-iteration-count</span>:
+            <span class="cv" id="c-iter">1</span>; }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">animation-direction</div>
+          <div class="card-explain">
+            ↔️ <strong>再生の向き</strong>を変える。<code>alternate</code>
+            にすると行ったり来たりの自然な動きになる。
+          </div>
+          <div class="stage">
+            <div class="dot" id="dot-dir" style="animation: demo-spin 1.5s linear infinite"></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">direction</span>
+              <select id="sel-dir" onchange="setDir(this.value)">
+                <option value="normal">normal（順方向）</option>
+                <option value="reverse">reverse（逆方向）</option>
+                <option value="alternate">alternate（交互）</option>
+                <option value="alternate-reverse">alternate-reverse</option>
+              </select>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation-direction</span>:
+            <span class="cv" id="c-dir">normal</span>; }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">animation-fill-mode</div>
+          <div class="card-explain">
+            🎭 <strong>終了後の見た目</strong>を決める。<code>forwards</code>
+            なら終わった状態のまま止まる（デフォルトは元の位置に戻る）。
+          </div>
+          <div class="stage">
+            <div
+              class="dot"
+              id="dot-fill"
+              style="animation: demo-fadein 1s ease 0s 1 forwards"
+            ></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">fill-mode</span>
+              <select
+                id="sel-fill"
+                onchange="document.getElementById('c-fill').textContent = this.value"
+              >
+                <option value="forwards">forwards（終了状態を保持）</option>
+                <option value="backwards">backwards（開始前に適用）</option>
+                <option value="both">both（両方）</option>
+                <option value="none">none（元に戻る）</option>
+              </select>
+            </div>
+            <button class="btn-play" onclick="replayFill()">▶ 再生して確認</button>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation-fill-mode</span>:
+            <span class="cv" id="c-fill">forwards</span>; }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">animation-play-state</div>
+          <div class="card-explain">
+            ⏸ <strong>アニメを一時停止・再開</strong>できる。ホバー時に止めたい場合など JavaScript
+            と組み合わせてよく使う。
+          </div>
+          <div class="stage">
+            <div class="dot" id="dot-play" style="animation: demo-spin 1s linear infinite"></div>
+          </div>
+          <div class="controls">
+            <div class="ctrl-row">
+              <span class="ctrl-label">play-state</span>
+              <select id="sel-play" onchange="setPlay(this.value)">
+                <option value="running">running（再生中）</option>
+                <option value="paused">paused（一時停止）</option>
+              </select>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="cs">.element</span> { <span class="ck">animation-play-state</span>:
+            <span class="cv" id="c-play">running</span>; }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2 -->
+    <section class="section" id="tab-keyframes">
+      <div class="sec-title">@keyframes パターン集</div>
+      <div class="sec-desc">クリックするとアニメーションが再生されます 👆</div>
+
+      <div class="explain">
+        <div class="explain-icon">💡</div>
+        <div class="explain-text">
+          <strong>@keyframes とは？</strong><br />
+          アニメーションの「動き方の設計図」です。<strong
+            >0%（開始）→ 50%（途中）→ 100%（終了）</strong
+          >
+          の各時点でスタイルを指定すると、その間を自動で補間してくれます。
+          よく使う6パターンをクリックして確認しましょう！
+        </div>
+      </div>
+      <div class="kf-grid">
+        <div class="kf-item active" onclick="pickKf('fadein', this)">
+          <div class="kf-icon" style="background: linear-gradient(135deg, #4f46e5, #0ea5e9)"></div>
+          <div class="kf-name">fadeIn</div>
+          <div class="kf-hint">opacity + translateY</div>
+        </div>
+        <div class="kf-item" onclick="pickKf('spin', this)">
+          <div
+            class="kf-icon"
+            style="background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 8px"
+          ></div>
+          <div class="kf-name">spin</div>
+          <div class="kf-hint">rotate(360deg)</div>
+        </div>
+        <div class="kf-item" onclick="pickKf('bounce', this)">
+          <div class="kf-icon" style="background: linear-gradient(135deg, #10b981, #0ea5e9)"></div>
+          <div class="kf-name">bounce</div>
+          <div class="kf-hint">translateY 上下</div>
+        </div>
+        <div class="kf-item" onclick="pickKf('pulse', this)">
+          <div class="kf-icon" style="background: linear-gradient(135deg, #ec4899, #f59e0b)"></div>
+          <div class="kf-name">pulse</div>
+          <div class="kf-hint">scale + opacity</div>
+        </div>
+        <div class="kf-item" onclick="pickKf('shake', this)">
+          <div
+            class="kf-icon"
+            style="background: linear-gradient(135deg, #ef4444, #f59e0b); border-radius: 8px"
+          ></div>
+          <div class="kf-name">shake</div>
+          <div class="kf-hint">translateX 左右</div>
+        </div>
+        <div class="kf-item" onclick="pickKf('flip', this)">
+          <div
+            class="kf-icon"
+            style="background: linear-gradient(135deg, #7c3aed, #ec4899); border-radius: 8px"
+          ></div>
+          <div class="kf-name">flip</div>
+          <div class="kf-hint">rotateY 3D反転</div>
+        </div>
+      </div>
+      <div class="card" style="max-width: 620px">
+        <div class="card-label">プレビュー</div>
+        <div class="kf-explain" id="kf-explain-text">
+          上のカードをクリックすると、ここにコードと説明が表示されます。
+        </div>
+        <div class="stage" style="height: 130px">
+          <div
+            id="kf-prev"
+            style="
+              width: 64px;
+              height: 64px;
+              border-radius: 14px;
+              background: linear-gradient(135deg, var(--accent), var(--accent2));
+              box-shadow: 0 8px 28px rgba(79, 70, 229, 0.4);
+            "
+          ></div>
+        </div>
+        <div class="code-block" id="kf-code"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3 -->
+    <section class="section" id="tab-transform">
+      <div class="sec-title">transform 関数</div>
+      <div class="sec-desc">カードにホバーすると変形します 🖱</div>
+
+      <div class="explain">
+        <div class="explain-icon">💡</div>
+        <div class="explain-text">
+          <strong>transform とは？</strong><br />
+          要素の<strong>移動・拡大縮小・回転・傾き</strong>を指定するプロパティです。アニメーションと組み合わせて使うことが多く、GPU
+          で処理されるため<strong>パフォーマンスが良い</strong>のが特徴です。
+          複数の関数を半角スペースで並べて組み合わせることもできます。
+        </div>
+      </div>
+      <div class="tf-grid" style="margin-bottom: 28px">
+        <div class="tf-card">
+          <div class="tf-stage-s"><div class="tf-box tf-translate">AB</div></div>
+          <div class="tf-name">translate</div>
+          <div class="tf-code">translate(18px,-12px)</div>
+        </div>
+        <div class="tf-card">
+          <div class="tf-stage-s"><div class="tf-box tf-scale">AB</div></div>
+          <div class="tf-name">scale</div>
+          <div class="tf-code">scale(1.6)</div>
+        </div>
+        <div class="tf-card">
+          <div class="tf-stage-s"><div class="tf-box tf-rotate">AB</div></div>
+          <div class="tf-name">rotate</div>
+          <div class="tf-code">rotate(135deg)</div>
+        </div>
+        <div class="tf-card">
+          <div class="tf-stage-s"><div class="tf-box tf-skew">AB</div></div>
+          <div class="tf-name">skew</div>
+          <div class="tf-code">skew(20deg,5deg)</div>
+        </div>
+        <div class="tf-card">
+          <div class="tf-stage-s"><div class="tf-box tf-scaleX">AB</div></div>
+          <div class="tf-name">scaleX</div>
+          <div class="tf-code">scaleX(0.35)</div>
+        </div>
+        <div class="tf-card">
+          <div class="tf-stage-s">
+            <div class="tf-box tf-rotateY" style="perspective: 200px">AB</div>
+          </div>
+          <div class="tf-name">rotateY（3D）</div>
+          <div class="tf-code">rotateY(65deg)</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">複数の transform を組み合わせる</div>
+        <div style="display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start">
+          <div class="stage" style="width: 220px; height: 140px; flex-shrink: 0">
+            <div
+              id="combo-box"
+              class="tf-box"
+              style="
+                width: 64px;
+                height: 64px;
+                border-radius: 12px;
+                transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+              "
+            >
+              AB
+            </div>
+          </div>
+          <div class="controls" style="flex: 1; min-width: 220px">
+            <div class="ctrl-row">
+              <span class="ctrl-label">translateX</span
+              ><input
+                type="range"
+                min="-80"
+                max="80"
+                value="0"
+                id="c-tx"
+                oninput="
+                  updateCombo();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="cv-tx">0px</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">translateY</span
+              ><input
+                type="range"
+                min="-40"
+                max="40"
+                value="0"
+                id="c-ty"
+                oninput="
+                  updateCombo();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="cv-ty">0px</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">rotate</span
+              ><input
+                type="range"
+                min="-180"
+                max="180"
+                value="0"
+                id="c-rot"
+                oninput="
+                  updateCombo();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="cv-rot">0deg</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">scale</span
+              ><input
+                type="range"
+                min="0.2"
+                max="2.5"
+                step="0.05"
+                value="1"
+                id="c-sc"
+                oninput="
+                  updateCombo();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="cv-sc">1.00</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 220px">
+            <div class="code-block" id="combo-code"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4 -->
+    <section class="section" id="tab-timing">
+      <div class="sec-title">animation-timing-function</div>
+      <div class="sec-desc">「一斉スタート」ボタンを押して速度の違いを比べよう 🏁</div>
+
+      <div class="explain">
+        <div class="explain-icon">💡</div>
+        <div class="explain-text">
+          <strong>timing-function とは？</strong><br />
+          アニメーションの<strong>速度の変化パターン</strong>（イージング）を指定します。同じ
+          duration でも、このプロパティ次第で動きの印象がまったく変わります。<br />
+          <strong>ease</strong
+          >（自然な動き）が最もよく使われ、<strong>linear</strong>（機械的な動き）、<strong>ease-in-out</strong>（丁寧な動き）なども頻出です。
+        </div>
+      </div>
+      <button class="btn-play" style="max-width: 220px; margin-bottom: 24px" onclick="fireAll()">
+        ▶ 一斉スタート！
+      </button>
+      <div class="timing-grid" id="timing-grid"></div>
+      <div class="card" style="margin-top: 28px">
+        <div class="card-label">cubic-bezier エディター</div>
+        <div class="card-explain">
+          🎚 <strong>自分でイージングを自作</strong>できる！4つの数値（0〜1
+          の制御点）を動かして、スライダーで好みの動きを作ろう。
+        </div>
+        <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start">
+          <div>
+            <div
+              class="stage"
+              style="width: 280px; height: 72px; position: relative; overflow: hidden"
+            >
+              <div
+                id="bez-ball"
+                style="
+                  position: absolute;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: linear-gradient(135deg, var(--accent3), var(--pink));
+                  top: 50%;
+                  left: 0;
+                  transform: translateY(-50%);
+                  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+                "
+              ></div>
+            </div>
+            <button class="btn-play" style="margin-top: 10px; max-width: 280px" onclick="fireBez()">
+              ▶ 再生
+            </button>
+          </div>
+          <div class="controls" style="flex: 1; min-width: 200px">
+            <div class="ctrl-row">
+              <span class="ctrl-label">P1 x</span
+              ><input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.25"
+                id="bx1"
+                oninput="
+                  updBez();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="bv-x1">0.25</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">P1 y</span
+              ><input
+                type="range"
+                min="-1"
+                max="2"
+                step="0.01"
+                value="0.1"
+                id="by1"
+                oninput="
+                  updBez();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="bv-y1">0.10</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">P2 x</span
+              ><input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.25"
+                id="bx2"
+                oninput="
+                  updBez();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="bv-x2">0.25</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label">P2 y</span
+              ><input
+                type="range"
+                min="-1"
+                max="2"
+                step="0.01"
+                value="1"
+                id="by2"
+                oninput="
+                  updBez();
+                  fillRange(this);
+                "
+              /><span class="ctrl-value" id="bv-y2">1.00</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 220px"><div class="code-block" id="bez-code"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5 -->
+    <section class="section" id="tab-performance">
+      <div class="sec-title">パフォーマンスのコツ</div>
+      <div class="sec-desc">GPUで処理できるプロパティを使うと 60fps で滑らかになります ⚡</div>
+
+      <div class="explain">
+        <div class="explain-icon">💡</div>
+        <div class="explain-text">
+          <strong>なぜパフォーマンスが大事？</strong><br />
+          アニメーションは毎秒60回（60fps）画面を更新しています。<strong
+            >width や margin をアニメさせると</strong
+          >、毎フレームごとにブラウザがレイアウト全体を計算しなおす「Reflow」が発生してカクつきます。
+          代わりに <strong>transform と opacity</strong> を使えば GPU
+          が処理してくれるため、常に滑らかに動きます。
+        </div>
+      </div>
+      <div class="perf-row">
+        <div class="perf-card bad">
+          <div class="perf-badge bad">⚠️ 重い（避けるべき）</div>
+          <div class="perf-title">width / height を変化させる</div>
+          <div class="perf-stage"><div class="perf-item-bad"></div></div>
+          <p class="perf-text">
+            レイアウト再計算（Reflow）が毎フレーム発生。<br />他の要素も巻き込んで再描画が走る。
+          </p>
+          <div class="code-block" style="margin-top: 12px">
+            <span class="cm">/* ❌ 重い */</span> @keyframes bad { 0% {
+            <span class="cv">width: 40px;</span> } 50% { <span class="cv">width: 80px;</span> } }
+          </div>
+        </div>
+        <div class="perf-card good">
+          <div class="perf-badge good">✅ 軽い（推奨）</div>
+          <div class="perf-title">transform を使用する</div>
+          <div class="perf-stage"><div class="perf-item-good"></div></div>
+          <p class="perf-text">
+            GPUの Composite レイヤーで完結。<br />他の要素に影響せず、60fps を維持できる。
+          </p>
+          <div class="code-block" style="margin-top: 12px">
+            <span class="cm">/* ✅ 軽い */</span> @keyframes good { 0% {
+            <span class="cv">transform: scale(1);</span> } 50% {
+            <span class="cv">transform: scale(1.3);</span> } }
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">プロパティ別 GPU 対応</div>
+        <div class="chips">
+          <div class="chip good">✅ transform（GPU）</div>
+          <div class="chip good">✅ opacity（GPU）</div>
+          <div class="chip good">✅ filter（GPU）</div>
+          <div class="chip warn">⚠ width / height（Reflow）</div>
+          <div class="chip warn">⚠ margin / padding（Reflow）</div>
+          <div class="chip warn">⚠ top / left（Reflow）</div>
+          <div class="chip tip">💡 will-change: transform を使おう</div>
+        </div>
+        <div class="code-block" style="margin-top: 16px">
+          <span class="cm">/* 事前にブラウザへヒントを渡す */</span>
+          <span class="cs">.animated</span> { <span class="ck">will-change</span>:
+          <span class="cv">transform, opacity</span>; }
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6 -->
+    <section class="section" id="tab-playground">
+      <div class="sec-title">🎮 自由に試す</div>
+      <div class="sec-desc">全プロパティを組み合わせて自分だけのアニメーションを作ろう！</div>
+
+      <div class="explain">
+        <div class="explain-icon">🚀</div>
+        <div class="explain-text">
+          <strong>まとめて体験しよう！</strong><br />
+          これまで学んだ
+          <strong>animation-name・duration・delay・iteration・timing・direction</strong>
+          を全部まとめて試せます。右のパネルで設定を変えると左のボックスにリアルタイムで反映されます。下のコードをそのままコピーして使えます！
+        </div>
+      </div>
+      <div class="pg-wrap">
+        <div>
+          <div class="pg-stage"><div class="pg-target" id="pg-target"></div></div>
+          <div class="code-block" id="pg-code" style="margin-top: 16px; font-size: 11px"></div>
+        </div>
+        <div class="pg-panel">
+          <h3>🎛 コントロールパネル</h3>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">アニメーション</div>
+            <select style="width: 100%" id="pg-anim" onchange="replayPG()">
+              <option value="fadein">fadeIn（フェード）</option>
+              <option value="spin">spin（回転）</option>
+              <option value="bounce">bounce（バウンス）</option>
+              <option value="pulse">pulse（脈動）</option>
+              <option value="shake">shake（振動）</option>
+              <option value="flip">flip（フリップ）</option>
+            </select>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">duration</div>
+            <div class="ctrl-row">
+              <input
+                type="range"
+                min="0.2"
+                max="4"
+                step="0.1"
+                value="1"
+                id="pg-dur"
+                oninput="
+                  replayPG();
+                  fillRange(this);
+                "
+              />
+              <span class="ctrl-value" id="pgv-dur">1.0s</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">delay</div>
+            <div class="ctrl-row">
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="0.1"
+                value="0"
+                id="pg-del"
+                oninput="
+                  replayPG();
+                  fillRange(this);
+                "
+              />
+              <span class="ctrl-value" id="pgv-del">0.0s</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">iteration-count</div>
+            <select style="width: 100%" id="pg-iter" onchange="replayPG()">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="infinite" selected>infinite</option>
+            </select>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">timing-function</div>
+            <select style="width: 100%" id="pg-ease" onchange="replayPG()">
+              <option value="ease">ease</option>
+              <option value="linear">linear</option>
+              <option value="ease-in">ease-in</option>
+              <option value="ease-out">ease-out</option>
+              <option value="ease-in-out">ease-in-out</option>
+              <option value="cubic-bezier(0.34,1.56,0.64,1)">bounce（cubic-bezier）</option>
+            </select>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">direction</div>
+            <select style="width: 100%" id="pg-dir" onchange="replayPG()">
+              <option value="normal">normal</option>
+              <option value="reverse">reverse</option>
+              <option value="alternate">alternate</option>
+              <option value="alternate-reverse">alternate-reverse</option>
+            </select>
+          </div>
+          <button class="btn-play" onclick="replayPG()">▶ 再生 / リセット</button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // TAB
+      function showTab(id) {
+        document.querySelectorAll(".section").forEach((s) => s.classList.remove("active"));
+        document.querySelectorAll("nav button").forEach((b) => b.classList.remove("active"));
+        document.getElementById("tab-" + id).classList.add("active");
+        ["animation", "keyframes", "transform", "timing", "performance", "playground"].forEach(
+          (n, i) => {
+            if (n === id) document.querySelectorAll("nav button")[i].classList.add("active");
+          },
+        );
+      }
+
+      // RANGE FILL
+      function fillRange(el) {
+        const mn = +el.min || 0,
+          mx = +el.max || 100,
+          v = +el.value;
+        const p = (((v - mn) / (mx - mn)) * 100).toFixed(1);
+        el.style.background = `linear-gradient(to right,#4f46e5 ${p}%,#d0d9f5 ${p}%)`;
+      }
+      document.querySelectorAll("input[type=range]").forEach(fillRange);
+
+      // DURATION
+      function setDur(v) {
+        v = parseFloat(v);
+        document.getElementById("v-dur").textContent = v.toFixed(1) + "s";
+        document.getElementById("c-dur").textContent = v.toFixed(1) + "s";
+        document.getElementById("dot-dur").style.animationDuration = v + "s";
+      }
+
+      // DELAY
+      let _del = 0;
+      function setDel(v) {
+        _del = +v;
+        document.getElementById("v-del").textContent = (+v).toFixed(1) + "s";
+        document.getElementById("c-del").textContent = (+v).toFixed(1) + "s";
+      }
+      function replayDel() {
+        const e = document.getElementById("dot-del");
+        e.style.animation = "none";
+        e.offsetWidth;
+        e.style.animation = `demo-fadein 0.8s ease ${_del}s 1 forwards`;
+      }
+
+      // ITERATION
+      function replayIter() {
+        const v = document.getElementById("sel-iter").value;
+        const e = document.getElementById("dot-iter");
+        e.style.animation = "none";
+        e.offsetWidth;
+        e.style.animation = `demo-bounce 0.8s ease 0s ${v}`;
+      }
+
+      // DIRECTION
+      function setDir(v) {
+        document.getElementById("c-dir").textContent = v;
+        document.getElementById("dot-dir").style.animationDirection = v;
+      }
+
+      // FILL
+      function replayFill() {
+        const v = document.getElementById("sel-fill").value;
+        document.getElementById("c-fill").textContent = v;
+        const e = document.getElementById("dot-fill");
+        e.style.animation = "none";
+        e.offsetWidth;
+        e.style.animation = `demo-fadein 1s ease 0s 1 ${v}`;
+      }
+
+      // PLAY STATE
+      function setPlay(v) {
+        document.getElementById("c-play").textContent = v;
+        document.getElementById("dot-play").style.animationPlayState = v;
+      }
+
+      // KEYFRAMES
+      const KF = {
+        fadein: {
+          cls: "a-fadein",
+          iter: "1",
+          dur: "0.8s",
+          desc: "<strong>opacity（透明度）</strong> を 0→1 に変えながら、同時に少し下から上へ移動させるパターン。ページ読み込み時の登場演出として最もよく使われます。",
+          code: `@keyframes fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(20px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}`,
+        },
+        spin: {
+          cls: "a-spin",
+          iter: "infinite",
+          dur: "1s",
+          desc: "<strong>rotate(360deg)</strong> で1回転させるシンプルな回転。ローディングインジケーターの定番パターンです。<code>linear</code> にすると等速で回り続けます。",
+          code: `@keyframes spin {\n  to {\n    transform: rotate(360deg);\n  }\n}`,
+        },
+        bounce: {
+          cls: "a-bounce",
+          iter: "infinite",
+          dur: "1s",
+          desc: "<strong>translateY</strong> で上下に跳ねる動き。途中で <code>scale</code> を少し変えることで、着地時に潰れる自然な物理感を演出しています。",
+          code: `@keyframes bounce {\n  0%, 100% { transform: translateY(0); }\n  40%  { transform: translateY(-30px) scale(0.95); }\n  60%  { transform: translateY(-20px) scale(1.05); }\n}`,
+        },
+        pulse: {
+          cls: "a-pulse",
+          iter: "infinite",
+          dur: "1s",
+          desc: "<strong>scale</strong> で拡大縮小しながら <strong>opacity</strong> も変化させる「脈動」パターン。通知バッジや「注目してほしい」UIによく使われます。",
+          code: `@keyframes pulse {\n  0%, 100% { transform: scale(1); opacity: 1; }\n  50%  { transform: scale(1.2); opacity: 0.7; }\n}`,
+        },
+        shake: {
+          cls: "a-shake",
+          iter: "1",
+          dur: "0.5s",
+          desc: "<strong>translateX</strong> で左右に素早く振る「エラー通知」パターン。0%〜100% の間に細かく値を刻むことで震えるような動きを作ります。",
+          code: `@keyframes shake {\n  0%, 100% { transform: translateX(0); }\n  20%  { transform: translateX(-10px); }\n  40%  { transform: translateX(10px); }\n  60%  { transform: translateX(-6px); }\n  80%  { transform: translateX(6px); }\n}`,
+        },
+        flip: {
+          cls: "a-flip",
+          iter: "infinite",
+          dur: "1.2s",
+          desc: "<strong>rotateY</strong> で Y 軸を中心に回転させる 3D フリップ。カードをめくるUIやロゴ演出などに使われます。<code>perspective</code> と組み合わせると立体感が増します。",
+          code: `@keyframes flip {\n  0%   { transform: rotateY(0); }\n  50%  { transform: rotateY(90deg); }\n  100% { transform: rotateY(0); }\n}`,
+        },
+      };
+      function pickKf(key, el) {
+        document.querySelectorAll(".kf-item").forEach((i) => i.classList.remove("active"));
+        el.classList.add("active");
+        const d = KF[key],
+          p = document.getElementById("kf-prev");
+        p.className = "";
+        p.style.cssText =
+          "width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 28px rgba(79,70,229,0.4);";
+        p.offsetWidth;
+        p.classList.add(d.cls);
+        p.style.setProperty("--iter", d.iter);
+        p.style.setProperty("--dur", d.dur);
+        document.getElementById("kf-code").textContent = d.code;
+        document.getElementById("kf-explain-text").innerHTML = d.desc;
+      }
+      setTimeout(() => pickKf("fadein", document.querySelector(".kf-item")), 100);
+
+      // COMBO
+      function updateCombo() {
+        const tx = document.getElementById("c-tx").value,
+          ty = document.getElementById("c-ty").value;
+        const rot = document.getElementById("c-rot").value,
+          sc = (+document.getElementById("c-sc").value).toFixed(2);
+        document.getElementById("cv-tx").textContent = tx + "px";
+        document.getElementById("cv-ty").textContent = ty + "px";
+        document.getElementById("cv-rot").textContent = rot + "deg";
+        document.getElementById("cv-sc").textContent = sc;
+        document.getElementById("combo-box").style.transform =
+          `translate(${tx}px,${ty}px) rotate(${rot}deg) scale(${sc})`;
+        document.getElementById("combo-code").textContent =
+          `.element {\n  transform:\n    translate(${tx}px, ${ty}px)\n    rotate(${rot}deg)\n    scale(${sc});\n}`;
+      }
+      updateCombo();
+
+      // TIMING
+      const TF = [
+        { n: "ease", d: "ゆっくり→速→ゆっくり", f: "ease" },
+        { n: "linear", d: "一定速度", f: "linear" },
+        { n: "ease-in", d: "ゆっくりスタート", f: "ease-in" },
+        { n: "ease-out", d: "ゆっくりフィニッシュ", f: "ease-out" },
+        { n: "ease-in-out", d: "両端ゆっくり", f: "ease-in-out" },
+        { n: "step-start", d: "最初にジャンプ", f: "step-start" },
+        { n: "step-end", d: "最後にジャンプ", f: "step-end" },
+        { n: "steps(4)", d: "4ステップで動く", f: "steps(4)" },
+      ];
+      const tg = document.getElementById("timing-grid");
+      TF.forEach((t, i) => {
+        tg.innerHTML += `<div class="timing-card" onclick="fireAll()"><div class="timing-track"><div class="timing-ball" id="tb${i}"></div></div><div class="t-name">${t.n}</div><div class="t-desc">${t.d}</div></div>`;
+      });
+      function fireAll() {
+        TF.forEach((t, i) => {
+          const b = document.getElementById("tb" + i);
+          b.style.transition = "none";
+          b.style.left = "6px";
+          b.offsetWidth;
+          b.style.transition = `left 1.8s ${t.f}`;
+          b.style.left = "calc(100% - 22px)";
+        });
+      }
+
+      // BEZIER
+      function updBez() {
+        const x1 = +document.getElementById("bx1").value,
+          y1 = +document.getElementById("by1").value;
+        const x2 = +document.getElementById("bx2").value,
+          y2 = +document.getElementById("by2").value;
+        document.getElementById("bv-x1").textContent = x1.toFixed(2);
+        document.getElementById("bv-y1").textContent = y1.toFixed(2);
+        document.getElementById("bv-x2").textContent = x2.toFixed(2);
+        document.getElementById("bv-y2").textContent = y2.toFixed(2);
+        document.getElementById("bez-code").textContent =
+          `.element {\n  animation-timing-function:\n    cubic-bezier(\n      ${x1}, ${y1},\n      ${x2}, ${y2}\n    );\n}`;
+      }
+      function fireBez() {
+        const x1 = document.getElementById("bx1").value,
+          y1 = document.getElementById("by1").value;
+        const x2 = document.getElementById("bx2").value,
+          y2 = document.getElementById("by2").value;
+        const b = document.getElementById("bez-ball");
+        b.style.transition = "none";
+        b.style.left = "0px";
+        b.offsetWidth;
+        b.style.transition = `left 1.8s cubic-bezier(${x1},${y1},${x2},${y2})`;
+        b.style.left = "calc(100% - 20px)";
+      }
+      updBez();
+
+      // PLAYGROUND
+      function replayPG() {
+        const anim = document.getElementById("pg-anim").value;
+        const dur = +document.getElementById("pg-dur").value;
+        const del = +document.getElementById("pg-del").value;
+        const iter = document.getElementById("pg-iter").value;
+        const ease = document.getElementById("pg-ease").value;
+        const dir = document.getElementById("pg-dir").value;
+        document.getElementById("pgv-dur").textContent = dur.toFixed(1) + "s";
+        document.getElementById("pgv-del").textContent = del.toFixed(1) + "s";
+        const t = document.getElementById("pg-target");
+        t.style.animation = "none";
+        t.offsetWidth;
+        t.style.animation = `demo-${anim} ${dur}s ${ease} ${del}s ${iter} ${dir}`;
+        document.getElementById("pg-code").textContent =
+          `.element {\n  animation-name:            demo-${anim};\n  animation-duration:        ${dur.toFixed(1)}s;\n  animation-timing-function: ${ease};\n  animation-delay:           ${del.toFixed(1)}s;\n  animation-iteration-count: ${iter};\n  animation-direction:       ${dir};\n}`;
+      }
+      replayPG();
+    </script>
+  </body>
+</html>

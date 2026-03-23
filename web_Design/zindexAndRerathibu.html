@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Layout Interactive Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-900 font-sans p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+      <header class="mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+          CSS Layout Interactive Demo
+        </h1>
+        <p class="text-gray-600 mt-2">position と z-index の挙動を検証するための教材ツール</p>
+      </header>
+
+      <!-- タブナビゲーション -->
+      <div class="flex border-b border-gray-300 mb-6 overflow-x-auto">
+        <button
+          id="tab-absolute"
+          class="py-3 px-6 font-semibold whitespace-nowrap transition-colors border-b-2 border-blue-600 text-blue-700"
+        >
+          絶対配置 (position: absolute)
+        </button>
+        <button
+          id="tab-zindex"
+          class="py-3 px-6 font-semibold whitespace-nowrap transition-colors text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+        >
+          重なり順 (z-index)
+        </button>
+      </div>
+
+      <!-- コンテンツエリア -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
+        <!-- 絶対配置デモエリア -->
+        <div id="demo-absolute" class="flex flex-col lg:flex-row gap-8">
+          <!-- プレビューエリア -->
+          <div class="flex-1">
+            <h2 class="text-xl font-bold mb-4">プレビュー</h2>
+            <div
+              class="bg-gray-200 p-8 rounded-md border border-gray-400 overflow-hidden relative"
+              style="height: 450px"
+            >
+              <div class="text-sm text-gray-600 mb-2 font-semibold">
+                祖父要素 (position: static)
+              </div>
+
+              <!-- 親要素 -->
+              <div
+                id="abs-parent"
+                class="border-4 border-dashed border-blue-500 bg-blue-50 w-72 h-72 p-4 transition-all duration-300 relative"
+                style="position: relative"
+              >
+                <div id="abs-parent-text" class="text-sm text-blue-800 font-bold mb-2">
+                  親要素<br />(position: relative)
+                </div>
+
+                <!-- ターゲット要素 -->
+                <div
+                  id="abs-target"
+                  class="bg-red-500 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center font-bold transition-all duration-300"
+                  style="position: absolute; top: 50px; left: 50px; width: 120px; height: 120px"
+                >
+                  <span>Target</span>
+                  <span class="text-xs font-normal mt-1">(absolute)</span>
+                  <span id="text-top" class="text-xs font-normal">top: 50px</span>
+                  <span id="text-left" class="text-xs font-normal">left: 50px</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- コントロールエリア -->
+          <div class="w-full lg:w-80 space-y-6">
+            <h2 class="text-xl font-bold mb-4">コントロールパネル</h2>
+
+            <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
+              <label class="block text-sm font-bold text-gray-800 mb-2"> 親要素の position </label>
+              <div class="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  id="btn-static"
+                  class="flex-1 py-2 px-2 rounded-md text-sm transition-colors text-gray-500 hover:text-gray-700"
+                >
+                  static
+                </button>
+                <button
+                  id="btn-relative"
+                  class="flex-1 py-2 px-2 rounded-md text-sm transition-colors bg-white shadow text-gray-900 font-bold"
+                >
+                  relative
+                </button>
+              </div>
+              <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+                Target要素（赤）は <code>position: absolute</code> です。基準となるのは、<code
+                  >static</code
+                >
+                以外の <code>position</code> を持つ直近の祖先要素です。
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded border border-gray-200 shadow-sm space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <label class="text-sm font-bold text-gray-800">Target: top</label>
+                  <span id="label-top" class="text-sm text-gray-600">50px</span>
+                </div>
+                <input
+                  id="input-top"
+                  type="range"
+                  min="-50"
+                  max="350"
+                  value="50"
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <label class="text-sm font-bold text-gray-800">Target: left</label>
+                  <span id="label-left" class="text-sm text-gray-600">50px</span>
+                </div>
+                <input
+                  id="input-left"
+                  type="range"
+                  min="-50"
+                  max="350"
+                  value="50"
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Z-indexデモエリア -->
+        <div id="demo-zindex" class="hidden flex-col lg:flex-row gap-8">
+          <!-- プレビューエリア -->
+          <div class="flex-1">
+            <h2 class="text-xl font-bold mb-4">プレビュー</h2>
+            <div
+              class="bg-gray-100 p-4 rounded-md border border-gray-300 relative overflow-hidden"
+              style="height: 450px"
+            >
+              <div class="text-sm text-gray-500 mb-2 absolute top-2 left-2">
+                コンテナ (position: relative)
+              </div>
+
+              <div
+                id="box-A"
+                class="bg-red-500 text-white font-bold p-4 rounded shadow-lg absolute flex flex-col items-center justify-center transition-all duration-300 opacity-95"
+                style="top: 40px; left: 40px; width: 140px; height: 140px; z-index: 1"
+              >
+                <span class="text-xl mb-1">Box A</span>
+                <span id="text-z-A" class="text-sm font-normal">z-index: 1</span>
+              </div>
+
+              <div
+                id="box-B"
+                class="bg-blue-500 text-white font-bold p-4 rounded shadow-lg absolute flex flex-col items-center justify-center transition-all duration-300 opacity-95"
+                style="top: 100px; left: 100px; width: 140px; height: 140px; z-index: 2"
+              >
+                <span class="text-xl mb-1">Box B</span>
+                <span id="text-z-B" class="text-sm font-normal">z-index: 2</span>
+              </div>
+
+              <div
+                id="box-C"
+                class="bg-green-500 text-white font-bold p-4 rounded shadow-lg absolute flex flex-col items-center justify-center transition-all duration-300 opacity-95"
+                style="top: 160px; left: 160px; width: 140px; height: 140px; z-index: 3"
+              >
+                <span class="text-xl mb-1">Box C</span>
+                <span id="text-z-C" class="text-sm font-normal">z-index: 3</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- コントロールエリア -->
+          <div class="w-full lg:w-80 space-y-6">
+            <h2 class="text-xl font-bold mb-4">コントロールパネル</h2>
+            <div class="bg-white p-4 rounded border border-gray-200 shadow-sm mb-4">
+              <p class="text-sm text-gray-700 leading-relaxed">
+                <code>z-index</code> の値が大きい要素ほど、手前に表示されます。<br />
+                ※ <code>z-index</code> は <code>static</code> 以外の
+                <code>position</code> が指定されている要素にのみ適用されます。
+              </p>
+            </div>
+
+            <div class="space-y-3">
+              <!-- Box A Control -->
+              <div
+                class="bg-white p-4 rounded border border-gray-200 shadow-sm flex items-center justify-between"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="w-6 h-6 rounded bg-red-500 shadow-sm"></div>
+                  <span class="font-bold text-gray-800">Box A</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="text-sm text-gray-600">z-index:</label>
+                  <input
+                    id="input-z-A"
+                    type="number"
+                    value="1"
+                    class="border border-gray-300 rounded px-3 py-1 w-20 text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <!-- Box B Control -->
+              <div
+                class="bg-white p-4 rounded border border-gray-200 shadow-sm flex items-center justify-between"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="w-6 h-6 rounded bg-blue-500 shadow-sm"></div>
+                  <span class="font-bold text-gray-800">Box B</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="text-sm text-gray-600">z-index:</label>
+                  <input
+                    id="input-z-B"
+                    type="number"
+                    value="2"
+                    class="border border-gray-300 rounded px-3 py-1 w-20 text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <!-- Box C Control -->
+              <div
+                class="bg-white p-4 rounded border border-gray-200 shadow-sm flex items-center justify-between"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="w-6 h-6 rounded bg-green-500 shadow-sm"></div>
+                  <span class="font-bold text-gray-800">Box C</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="text-sm text-gray-600">z-index:</label>
+                  <input
+                    id="input-z-C"
+                    type="number"
+                    value="3"
+                    class="border border-gray-300 rounded px-3 py-1 w-20 text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // タブ切り替えロジック
+        const tabAbs = document.getElementById("tab-absolute");
+        const tabZ = document.getElementById("tab-zindex");
+        const demoAbs = document.getElementById("demo-absolute");
+        const demoZ = document.getElementById("demo-zindex");
+
+        const activeTabClass =
+          "py-3 px-6 font-semibold whitespace-nowrap transition-colors border-b-2 border-blue-600 text-blue-700";
+        const inactiveTabClass =
+          "py-3 px-6 font-semibold whitespace-nowrap transition-colors text-gray-500 hover:text-gray-800 hover:bg-gray-100";
+
+        function switchTab(tab) {
+          if (tab === "absolute") {
+            demoAbs.style.display = "flex";
+            demoZ.style.display = "none";
+            tabAbs.className = activeTabClass;
+            tabZ.className = inactiveTabClass;
+          } else {
+            demoAbs.style.display = "none";
+            demoZ.style.display = "flex";
+            tabZ.className = activeTabClass;
+            tabAbs.className = inactiveTabClass;
+          }
+        }
+
+        tabAbs.addEventListener("click", () => switchTab("absolute"));
+        tabZ.addEventListener("click", () => switchTab("zindex"));
+
+        // 絶対配置デモのロジック
+        const btnStatic = document.getElementById("btn-static");
+        const btnRelative = document.getElementById("btn-relative");
+        const absParent = document.getElementById("abs-parent");
+        const absParentText = document.getElementById("abs-parent-text");
+
+        const activeBtnClass =
+          "flex-1 py-2 px-2 rounded-md text-sm transition-colors bg-white shadow text-gray-900 font-bold";
+        const inactiveBtnClass =
+          "flex-1 py-2 px-2 rounded-md text-sm transition-colors text-gray-500 hover:text-gray-700";
+
+        function updateParentPos(pos) {
+          absParent.style.position = pos;
+          absParentText.innerHTML = `親要素<br/>(position: ${pos})`;
+
+          if (pos === "static") {
+            btnStatic.className = activeBtnClass;
+            btnRelative.className = inactiveBtnClass;
+          } else {
+            btnRelative.className = activeBtnClass;
+            btnStatic.className = inactiveBtnClass;
+          }
+        }
+
+        btnStatic.addEventListener("click", () => updateParentPos("static"));
+        btnRelative.addEventListener("click", () => updateParentPos("relative"));
+
+        const inputTop = document.getElementById("input-top");
+        const inputLeft = document.getElementById("input-left");
+        const absTarget = document.getElementById("abs-target");
+        const textTop = document.getElementById("text-top");
+        const textLeft = document.getElementById("text-left");
+        const labelTop = document.getElementById("label-top");
+        const labelLeft = document.getElementById("label-left");
+
+        function updateTargetPos() {
+          const t = inputTop.value;
+          const l = inputLeft.value;
+          absTarget.style.top = `${t}px`;
+          absTarget.style.left = `${l}px`;
+          textTop.textContent = `top: ${t}px`;
+          textLeft.textContent = `left: ${l}px`;
+          labelTop.textContent = `${t}px`;
+          labelLeft.textContent = `${l}px`;
+        }
+
+        inputTop.addEventListener("input", updateTargetPos);
+        inputLeft.addEventListener("input", updateTargetPos);
+
+        // Z-indexデモのロジック
+        const boxes = ["A", "B", "C"];
+        boxes.forEach((id) => {
+          const input = document.getElementById(`input-z-${id}`);
+          const box = document.getElementById(`box-${id}`);
+          const text = document.getElementById(`text-z-${id}`);
+
+          input.addEventListener("input", (e) => {
+            const parsedValue = parseInt(e.target.value, 10);
+            const zValue = isNaN(parsedValue) ? 0 : parsedValue;
+            box.style.zIndex = zValue;
+            text.textContent = `z-index: ${zValue}`;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

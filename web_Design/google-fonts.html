@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>おすすめ Google フォント 20選 — 訓練校 学習サイト</title>
+
+    <!-- Google Fonts 読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700&family=M+PLUS+1p:wght@400;700&family=Kosugi+Maru&family=Sawarabi+Mincho&family=Sawarabi+Gothic&family=Zen+Kaku+Gothic+New:wght@400;700&family=Zen+Maru+Gothic:wght@400;700&family=Shippori+Mincho:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Inter:wght@400;700&family=Raleway:wght@400;700&family=Merriweather:wght@400;700&family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ===== リセット & ベース ===== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+          Meiryo, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        line-height: 1.7;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ===== ヘッダー ===== */
+      header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+      }
+
+      header .logo span {
+        color: #5dade2;
+      }
+
+      /* ===== ヒーローエリア ===== */
+      .hero {
+        background: linear-gradient(135deg, #2c3e50 0%, #3d6b8f 100%);
+        color: #fff;
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        font-weight: bold;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        opacity: 0.85;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* ===== メインコンテンツ ===== */
+      main {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0 20px;
+      }
+
+      /* ===== セクションタイトル ===== */
+      .section-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #2c3e50;
+        border-left: 5px solid #5dade2;
+        padding-left: 12px;
+        margin-bottom: 24px;
+      }
+
+      /* ===== フォントカード ===== */
+      .font-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 28px 32px;
+        margin-bottom: 28px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .font-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(41, 128, 185, 0.13);
+      }
+
+      .font-card .font-number {
+        display: inline-block;
+        background: #2980b9;
+        color: #fff;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+
+      .font-card .font-name {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #1a5276;
+        vertical-align: middle;
+      }
+
+      .font-card .font-sample {
+        font-size: 1.6rem;
+        margin: 18px 0;
+        padding: 20px;
+        background: #f0f7ff;
+        border-radius: 8px;
+        border: 1px solid #d0e8f9;
+        line-height: 1.6;
+      }
+
+      .font-card .font-meta {
+        margin-bottom: 16px;
+      }
+
+      .font-card .font-meta p {
+        font-size: 0.92rem;
+        color: #555;
+        margin-bottom: 6px;
+      }
+
+      .font-card .font-meta strong {
+        color: #2c3e50;
+      }
+
+      .font-card .code-block {
+        position: relative;
+        background: #2d2d2d;
+        color: #f8f8f2;
+        border-radius: 6px;
+        padding: 16px;
+        font-family: "Courier New", Consolas, monospace;
+        font-size: 0.82rem;
+        line-height: 1.6;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .font-card .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #5dade2;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 14px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .font-card .copy-btn:hover {
+        background: #2e86c1;
+      }
+
+      /* ===== トップに戻る ===== */
+      .back-to-top {
+        display: block;
+        text-align: center;
+        margin: 40px 0 20px;
+        color: #2980b9;
+        font-weight: bold;
+        font-size: 0.95rem;
+      }
+
+      .back-to-top:hover {
+        text-decoration: underline;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 30px;
+        color: #2980b9;
+        font-size: 0.95rem;
+        font-weight: bold;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+
+      /* ===== フッター ===== */
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 0.8rem;
+        color: #999;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 20px;
+      }
+
+      /* ===== レスポンシブ ===== */
+      @media (max-width: 600px) {
+        header {
+          padding: 16px 20px;
+        }
+
+        .hero h1 {
+          font-size: 1.5rem;
+        }
+
+        .font-card {
+          padding: 20px 18px;
+        }
+
+        .font-card .font-sample {
+          font-size: 1.2rem;
+          padding: 14px;
+        }
+
+        .font-card .code-block {
+          font-size: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo"><a href="../index.html">訓練校 <span>学習サイト</span></a></div>
+    </header>
+
+    <div class="hero">
+      <h1>おすすめ Google フォント 20選</h1>
+      <p>
+        フォントはWebサイトの印象を大きく左右します。ここでは無料で使える
+        Google Fonts から、特におすすめの20書体を厳選しました。<br />
+        コピペで使えるCSSコード付きです。
+      </p>
+    </div>
+
+    <main>
+      <a class="back-link" href="../index.html">← トップページに戻る</a>
+
+      <!-- ========== 日本語フォント ========== -->
+      <h2 class="section-title">日本語フォント（10選）</h2>
+
+      <!-- 1. Noto Sans JP -->
+      <div class="font-card">
+        <span class="font-number">1</span>
+        <span class="font-name">Noto Sans JP</span>
+        <div class="font-sample" style="font-family: 'Noto Sans JP', sans-serif">
+          あいうえお 漢字 — 美しい日本語ゴシック体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>Googleが開発した万能な日本語ゴシック体。文字の太さが豊富で、あらゆるWebサイトで安心して使えます。</p>
+          <p><strong>使用シーン：</strong>企業サイト、ブログ、ニュースサイトなど、ほぼすべてのジャンル</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Noto Sans JP', sans-serif;</div>
+      </div>
+
+      <!-- 2. Noto Serif JP -->
+      <div class="font-card">
+        <span class="font-number">2</span>
+        <span class="font-name">Noto Serif JP</span>
+        <div class="font-sample" style="font-family: 'Noto Serif JP', serif">
+          あいうえお 漢字 — 格式ある日本語明朝体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>格式のある明朝体で、読みやすさと上品さを兼ね備えています。Noto Sans JPとの相性も抜群です。</p>
+          <p><strong>使用シーン：</strong>文学サイト、和風デザイン、フォーマルな企業サイト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Noto Serif JP', serif;</div>
+      </div>
+
+      <!-- 3. M PLUS Rounded 1c -->
+      <div class="font-card">
+        <span class="font-number">3</span>
+        <span class="font-name">M PLUS Rounded 1c</span>
+        <div class="font-sample" style="font-family: 'M PLUS Rounded 1c', sans-serif">
+          あいうえお 漢字 — やわらかい丸ゴシック<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>角が丸く、やわらかくて親しみやすい印象。子ども向けやカジュアルなデザインにぴったりです。</p>
+          <p><strong>使用シーン：</strong>子ども向けサイト、カフェ・雑貨店、カジュアルなLP</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'M PLUS Rounded 1c', sans-serif;</div>
+      </div>
+
+      <!-- 4. M PLUS 1p -->
+      <div class="font-card">
+        <span class="font-number">4</span>
+        <span class="font-name">M PLUS 1p</span>
+        <div class="font-sample" style="font-family: 'M PLUS 1p', sans-serif">
+          あいうえお 漢字 — モダンなゴシック体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>すっきりとしたモダンなゴシック体。軽量で読みやすく、幅広いウェイトが揃っています。</p>
+          <p><strong>使用シーン：</strong>テック系サイト、スタートアップ、アプリのUI</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'M PLUS 1p', sans-serif;</div>
+      </div>
+
+      <!-- 5. Kosugi Maru -->
+      <div class="font-card">
+        <span class="font-number">5</span>
+        <span class="font-name">Kosugi Maru</span>
+        <div class="font-sample" style="font-family: 'Kosugi Maru', sans-serif">
+          あいうえお 漢字 — 親しみやすい丸ゴシック<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>丸みを帯びた形が可愛らしく、親しみやすさ抜群。ファイルサイズも比較的小さめです。</p>
+          <p><strong>使用シーン：</strong>保育園・学校サイト、ハンドメイド、やさしい雰囲気のサイト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Kosugi Maru', sans-serif;</div>
+      </div>
+
+      <!-- 6. Sawarabi Mincho -->
+      <div class="font-card">
+        <span class="font-number">6</span>
+        <span class="font-name">Sawarabi Mincho</span>
+        <div class="font-sample" style="font-family: 'Sawarabi Mincho', serif">
+          あいうえお 漢字 — 美しい明朝体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>繊細で美しい明朝体。和風テイストのデザインに最適で、文章に品格を与えます。</p>
+          <p><strong>使用シーン：</strong>和食レストラン、旅館、日本文化に関するサイト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Sawarabi Mincho', serif;</div>
+      </div>
+
+      <!-- 7. Sawarabi Gothic -->
+      <div class="font-card">
+        <span class="font-number">7</span>
+        <span class="font-name">Sawarabi Gothic</span>
+        <div class="font-sample" style="font-family: 'Sawarabi Gothic', sans-serif">
+          あいうえお 漢字 — 読みやすいゴシック体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>シンプルで読みやすいゴシック体。クセがなく、さまざまなデザインになじみます。</p>
+          <p><strong>使用シーン：</strong>ブログ、情報サイト、汎用的な日本語テキスト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Sawarabi Gothic', sans-serif;</div>
+      </div>
+
+      <!-- 8. Zen Kaku Gothic New -->
+      <div class="font-card">
+        <span class="font-number">8</span>
+        <span class="font-name">Zen Kaku Gothic New</span>
+        <div class="font-sample" style="font-family: 'Zen Kaku Gothic New', sans-serif">
+          あいうえお 漢字 — すっきりした現代的ゴシック<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>現代的ですっきりとしたデザイン。見出しにも本文にも使いやすく、洗練された印象を与えます。</p>
+          <p><strong>使用シーン：</strong>コーポレートサイト、ポートフォリオ、モダンなWebアプリ</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Zen Kaku Gothic New', sans-serif;</div>
+      </div>
+
+      <!-- 9. Zen Maru Gothic -->
+      <div class="font-card">
+        <span class="font-number">9</span>
+        <span class="font-name">Zen Maru Gothic</span>
+        <div class="font-sample" style="font-family: 'Zen Maru Gothic', sans-serif">
+          あいうえお 漢字 — やさしい丸ゴシック<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>丸みがありつつも上品さを保つバランスの良いフォント。やさしく親しみやすい雰囲気です。</p>
+          <p><strong>使用シーン：</strong>ヘルスケア、教育系サイト、やさしい雰囲気のサービス</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Zen Maru Gothic', sans-serif;</div>
+      </div>
+
+      <!-- 10. Shippori Mincho -->
+      <div class="font-card">
+        <span class="font-number">10</span>
+        <span class="font-name">Shippori Mincho</span>
+        <div class="font-sample" style="font-family: 'Shippori Mincho', serif">
+          あいうえお 漢字 — 上品な明朝体<br />
+          The quick brown fox jumps over the lazy dog.
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>しっぽりとした上品な明朝体。高級感と落ち着きを演出でき、本文にも見出しにも映えます。</p>
+          <p><strong>使用シーン：</strong>ブランドサイト、高級レストラン、ウェディング関連</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Shippori Mincho', serif;</div>
+      </div>
+
+      <!-- ========== 英語フォント ========== -->
+      <h2 class="section-title" style="margin-top: 50px">英語フォント（10選）</h2>
+
+      <!-- 11. Roboto -->
+      <div class="font-card">
+        <span class="font-number">11</span>
+        <span class="font-name">Roboto</span>
+        <div class="font-sample" style="font-family: 'Roboto', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>Google が開発したサンセリフ体。Android の標準フォントとして有名で、世界で最も使われているWebフォントの一つです。</p>
+          <p><strong>使用シーン：</strong>あらゆるWebサイト、UIデザイン、マテリアルデザイン</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Roboto', sans-serif;</div>
+      </div>
+
+      <!-- 12. Open Sans -->
+      <div class="font-card">
+        <span class="font-number">12</span>
+        <span class="font-name">Open Sans</span>
+        <div class="font-sample" style="font-family: 'Open Sans', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>高い可読性と親しみやすさを兼ね備えたサンセリフ体。小さなサイズでも読みやすく、本文テキストに最適です。</p>
+          <p><strong>使用シーン：</strong>ブログ、ニュースサイト、長文の本文テキスト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Open Sans', sans-serif;</div>
+      </div>
+
+      <!-- 13. Lato -->
+      <div class="font-card">
+        <span class="font-number">13</span>
+        <span class="font-name">Lato</span>
+        <div class="font-sample" style="font-family: 'Lato', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>エレガントさと温かみのバランスが絶妙なサンセリフ体。「Lato」はポーランド語で「夏」を意味します。</p>
+          <p><strong>使用シーン：</strong>コーポレートサイト、ポートフォリオ、プロフェッショナルな印象を出したいサイト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Lato', sans-serif;</div>
+      </div>
+
+      <!-- 14. Montserrat -->
+      <div class="font-card">
+        <span class="font-number">14</span>
+        <span class="font-name">Montserrat</span>
+        <div class="font-sample" style="font-family: 'Montserrat', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>モダンで力強い印象のサンセリフ体。見出しやタイトルに使うと存在感を発揮します。</p>
+          <p><strong>使用シーン：</strong>ランディングページの見出し、バナー、ヘッダーデザイン</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Montserrat', sans-serif;</div>
+      </div>
+
+      <!-- 15. Playfair Display -->
+      <div class="font-card">
+        <span class="font-number">15</span>
+        <span class="font-name">Playfair Display</span>
+        <div class="font-sample" style="font-family: 'Playfair Display', serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>クラシックで美しいセリフ体。太い線と細い線のコントラストが強く、高級感を演出します。</p>
+          <p><strong>使用シーン：</strong>ファッション、ラグジュアリーブランド、雑誌風デザイン</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Playfair Display', serif;</div>
+      </div>
+
+      <!-- 16. Poppins -->
+      <div class="font-card">
+        <span class="font-number">16</span>
+        <span class="font-name">Poppins</span>
+        <div class="font-sample" style="font-family: 'Poppins', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>幾何学的でクリーンなデザインのサンセリフ体。モダンで洗練された印象を与え、人気急上昇中です。</p>
+          <p><strong>使用シーン：</strong>SaaS、テック系LP、モダンなWebアプリのUI</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Poppins', sans-serif;</div>
+      </div>
+
+      <!-- 17. Inter -->
+      <div class="font-card">
+        <span class="font-number">17</span>
+        <span class="font-name">Inter</span>
+        <div class="font-sample" style="font-family: 'Inter', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>UIデザインに特化して設計されたフォント。小さなサイズでも読みやすく、画面上での表示に最適化されています。</p>
+          <p><strong>使用シーン：</strong>ダッシュボード、管理画面、WebアプリのUI全般</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Inter', sans-serif;</div>
+      </div>
+
+      <!-- 18. Raleway -->
+      <div class="font-card">
+        <span class="font-number">18</span>
+        <span class="font-name">Raleway</span>
+        <div class="font-sample" style="font-family: 'Raleway', sans-serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>洗練された細字が美しいサンセリフ体。特に細いウェイトでの見出し表示がエレガントです。</p>
+          <p><strong>使用シーン：</strong>ファッション系サイト、写真ポートフォリオ、ミニマルデザイン</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Raleway', sans-serif;</div>
+      </div>
+
+      <!-- 19. Merriweather -->
+      <div class="font-card">
+        <span class="font-number">19</span>
+        <span class="font-name">Merriweather</span>
+        <div class="font-sample" style="font-family: 'Merriweather', serif">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>画面上での読みやすさを最優先に設計されたセリフ体。長い文章でも目が疲れにくい設計です。</p>
+          <p><strong>使用シーン：</strong>ブログ記事の本文、オンラインマガジン、読みもの系サイト</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Merriweather', serif;</div>
+      </div>
+
+      <!-- 20. Dancing Script -->
+      <div class="font-card">
+        <span class="font-number">20</span>
+        <span class="font-name">Dancing Script</span>
+        <div class="font-sample" style="font-family: 'Dancing Script', cursive">
+          The quick brown fox jumps over the lazy dog.<br />
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
+        </div>
+        <div class="font-meta">
+          <p><strong>おすすめ理由：</strong>おしゃれで流れるような手書き風フォント。アクセントとして使うと、デザインに華やかさと個性が加わります。</p>
+          <p><strong>使用シーン：</strong>招待状、カフェメニュー、ウェディングサイト、ロゴのアクセント</p>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">コピー</button>&lt;link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+font-family: 'Dancing Script', cursive;</div>
+      </div>
+
+      <a class="back-to-top" href="#">↑ ページトップに戻る</a>
+      <a class="back-link" href="../index.html">← トップページに戻る</a>
+    </main>
+
+    <footer>&copy; 2026 訓練校 学習サイト</footer>
+
+    <script>
+      function copyCode(btn) {
+        const codeBlock = btn.parentElement;
+        // ボタンのテキストを除いたコード部分を取得
+        const text = codeBlock.textContent
+          .replace("コピー", "")
+          .trim();
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = "コピー済み!";
+          setTimeout(function () {
+            btn.textContent = "コピー";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

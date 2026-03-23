@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G&T</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&family=Noto+Sans+JP:wght@200;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       G&T — "Beautiful but What Is This?" Example
+       意図的にメッセージが不明瞭なデザイン
+       ============================================= */
+
+    :root {
+      --blue-deep: #0a1628;
+      --blue-dark: #0f2847;
+      --blue-mid: #1a4a7a;
+      --blue-accent: #2d7dd2;
+      --blue-light: #5ba4e6;
+      --blue-pale: #b8d8f8;
+      --blue-ghost: #e8f2fc;
+      --white: #f7fafd;
+      --white-pure: #ffffff;
+      --gray-subtle: #8a9bb5;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--blue-deep);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 200;
+      overflow-x: hidden;
+      line-height: 1.8;
+    }
+
+    /* --- Navigation (ロゴだけで何のサイトか不明) --- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 22, 40, 0.6);
+      border-bottom: 1px solid rgba(45, 125, 210, 0.1);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--blue-light);
+    }
+
+    .nav-logo span {
+      color: var(--blue-pale);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    /* ダメポイント: ナビのラベルが抽象的すぎる */
+    .nav-links a {
+      color: var(--gray-subtle);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue-light);
+    }
+
+    /* --- Hero (美しいが何も伝わらない) --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 2rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(45, 125, 210, 0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 30%, rgba(91, 164, 230, 0.08) 0%, transparent 40%),
+                  radial-gradient(ellipse at 50% 80%, rgba(26, 74, 122, 0.2) 0%, transparent 50%);
+      animation: nebula 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebula {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-5%, 3%) rotate(3deg); }
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(45, 125, 210, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 125, 210, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    /* ダメポイント: キャッチコピーが詩的すぎて意味不明 */
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--blue-light);
+      display: block;
+      font-size: 0.6em;
+      margin-top: 0.3em;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--gray-subtle);
+      max-width: 500px;
+      margin: 0 auto 3rem;
+      font-weight: 200;
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+    }
+
+    /* ダメポイント: CTAが「体験する」だけで何の体験か不明 */
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 2.5rem;
+      border: 1px solid rgba(45, 125, 210, 0.4);
+      border-radius: 0;
+      background: transparent;
+      color: var(--blue-pale);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+      text-decoration: none;
+    }
+
+    .hero-cta:hover {
+      background: rgba(45, 125, 210, 0.1);
+      border-color: var(--blue-light);
+      color: var(--white);
+    }
+
+    .hero-cta .arrow {
+      transition: transform 0.3s;
+    }
+
+    .hero-cta:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--gray-subtle);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--blue-accent), transparent);
+      margin: 0.8rem auto 0;
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Philosophy Section (抽象的すぎるセクション) --- */
+    .philosophy {
+      padding: 8rem 3rem;
+      position: relative;
+    }
+
+    .philosophy-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .philosophy-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 2rem;
+    }
+
+    /* ダメポイント: 「思考を解放する」←何のこと？ */
+    .philosophy-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 2rem;
+      color: var(--white);
+    }
+
+    .philosophy-title em {
+      font-style: italic;
+      color: var(--blue-light);
+    }
+
+    .philosophy-text {
+      color: var(--gray-subtle);
+      font-size: 0.95rem;
+      line-height: 2;
+      font-weight: 200;
+    }
+
+    /* ダメポイント: 装飾的な要素が情報より目立つ */
+    .philosophy-visual {
+      position: relative;
+      height: 500px;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    .orb-1 {
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(45, 125, 210, 0.3), transparent 70%);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 200px;
+      height: 200px;
+      top: 20%;
+      right: 10%;
+      background: radial-gradient(circle, rgba(91, 164, 230, 0.2), transparent 70%);
+      animation: float 6s ease-in-out infinite reverse;
+    }
+
+    .orb-3 {
+      width: 150px;
+      height: 150px;
+      bottom: 15%;
+      left: 15%;
+      background: radial-gradient(circle, rgba(26, 74, 122, 0.4), transparent 70%);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .orb-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      height: 250px;
+      border: 1px solid rgba(45, 125, 210, 0.15);
+      border-radius: 50%;
+      animation: spin 30s linear infinite;
+    }
+
+    .orb-ring::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: var(--blue-accent);
+      border-radius: 50%;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-20px); }
+    }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* --- Features (カードは綺麗だが中身が空虚) --- */
+    .features {
+      padding: 6rem 3rem 8rem;
+      background: linear-gradient(180deg, transparent, rgba(15, 40, 71, 0.3), transparent);
+    }
+
+    .features-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 5rem;
+    }
+
+    .features-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ダメポイント: 「3つの原点」←何の原点？ */
+    .features-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .features-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .feature-card {
+      padding: 3rem 2.5rem;
+      border: 1px solid rgba(45, 125, 210, 0.1);
+      background: rgba(15, 40, 71, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue-accent), transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(45, 125, 210, 0.25);
+      background: rgba(15, 40, 71, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .feature-number {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(45, 125, 210, 0.2);
+      line-height: 1;
+      margin-bottom: 2rem;
+    }
+
+    /* ダメポイント: カード見出しが「思索」「共鳴」「創発」←意味不明 */
+    .feature-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--blue-pale);
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-desc {
+      color: var(--gray-subtle);
+      font-size: 0.85rem;
+      line-height: 1.9;
+      font-weight: 200;
+    }
+
+    /* --- Metrics (数字は印象的だが何の数字か不明) --- */
+    .metrics {
+      padding: 6rem 3rem;
+      border-top: 1px solid rgba(45, 125, 210, 0.08);
+      border-bottom: 1px solid rgba(45, 125, 210, 0.08);
+    }
+
+    .metrics-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--blue-light);
+      line-height: 1;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ダメポイント: 「体験」「接続」「展開」「到達」←何の数字？ */
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray-subtle);
+    }
+
+    /* --- Testimonial (誰が何について言ってるか不明) --- */
+    .testimonial {
+      padding: 8rem 3rem;
+      text-align: center;
+    }
+
+    .testimonial-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .testimonial-mark {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      color: rgba(45, 125, 210, 0.2);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--blue-pale);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-subtle);
+    }
+
+    /* --- CTA Section (何に申し込むか一切不明) --- */
+    .cta-section {
+      padding: 8rem 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(45, 125, 210, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 2rem;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-title em {
+      font-style: italic;
+      color: var(--blue-light);
+    }
+
+    .cta-sub {
+      color: var(--gray-subtle);
+      font-size: 0.95rem;
+      font-weight: 200;
+      max-width: 450px;
+      margin: 0 auto 3rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 1.1rem 3rem;
+      background: var(--blue-accent);
+      color: var(--white-pure);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-light);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(45, 125, 210, 0.3);
+    }
+
+    .btn-secondary {
+      padding: 1.1rem 3rem;
+      background: transparent;
+      color: var(--blue-pale);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid rgba(45, 125, 210, 0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--blue-light);
+      color: var(--white);
+    }
+
+    /* --- Footer (最小限の情報) --- */
+    .footer {
+      padding: 3rem;
+      border-top: 1px solid rgba(45, 125, 210, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--blue-mid);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-text {
+      font-size: 0.7rem;
+      color: rgba(138, 155, 181, 0.5);
+      letter-spacing: 0.1em;
+    }
+
+    /* --- Floating Particles --- */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--blue-accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      to { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .philosophy-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .philosophy-visual { height: 300px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .metrics-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    /* --- Scroll Reveal --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles (過剰な装飾) -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-logo">G<span>&</span>T</div>
+    <ul class="nav-links">
+      <!-- ダメポイント: ナビが「哲学」「原点」「声」←プログラミングスクールとは思えない -->
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#features">Origin</a></li>
+      <li><a href="#voices">Voices</a></li>
+      <li><a href="#begin">Begin</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-content">
+      <!-- ダメポイント: 「思考の先にある景色」←プログラミングスクールと分からない -->
+      <p class="hero-eyebrow">Where thought becomes form</p>
+      <h1 class="hero-title">
+        思考の先にある、
+        <em>まだ見ぬ景色へ</em>
+      </h1>
+      <!-- ダメポイント: 「新しい知の旅路」←何の旅？ -->
+      <p class="hero-sub">
+        あなたの中に眠る可能性を、静かに、確かに、目覚めさせる。<br>
+        新しい知の旅路が、ここから始まります。
+      </p>
+      <!-- ダメポイント: 「体験する」←何を体験？ -->
+      <a href="#begin" class="hero-cta">
+        体験する <span class="arrow">&rarr;</span>
+      </a>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="philosophy" id="philosophy">
+    <div class="philosophy-inner">
+      <div class="reveal">
+        <p class="philosophy-label">Our Philosophy</p>
+        <!-- ダメポイント: 「思索を、解放する。」←何の思索？ -->
+        <h2 class="philosophy-title">
+          思索を、<em>解放する。</em>
+        </h2>
+        <!-- ダメポイント: 美しい文章だが具体的に何を教えるスクールか一切不明 -->
+        <p class="philosophy-text">
+          私たちは、知識の断片を繋ぎ合わせるのではなく、
+          思考そのものの在り方を問い直します。
+          既存の枠組みに囚われない、自由な発想。
+          G&Tが大切にしているのは、答えではなく、
+          問いを生み出す力です。
+          <br><br>
+          静寂の中で生まれるひらめき。
+          対話の中で育まれる確信。
+          その両方を、ここで。
+        </p>
+      </div>
+      <div class="philosophy-visual reveal">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb-ring"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="features-header reveal">
+      <p class="features-label">Three Origins</p>
+      <!-- ダメポイント: 「すべては、ここから。」←何が？ -->
+      <h2 class="features-title">すべては、ここから。</h2>
+    </div>
+    <div class="features-grid">
+      <!-- ダメポイント: 「思索 / Contemplation」←プログラミングと何の関係？ -->
+      <div class="feature-card reveal">
+        <div class="feature-number">01</div>
+        <h3 class="feature-name">思索</h3>
+        <p class="feature-desc">
+          Contemplation &mdash;
+          深い内省から始まる創造の源泉。
+          沈黙の中に潜む無限の可能性に、
+          耳を澄ませる時間を。
+        </p>
+      </div>
+      <!-- ダメポイント: 「共鳴 / Resonance」←抽象的すぎる -->
+      <div class="feature-card reveal">
+        <div class="feature-number">02</div>
+        <h3 class="feature-name">共鳴</h3>
+        <p class="feature-desc">
+          Resonance &mdash;
+          異なる視点が交わる瞬間、
+          新たな調和が生まれる。
+          一人では辿り着けない場所へ。
+        </p>
+      </div>
+      <!-- ダメポイント: 「創発 / Emergence」←何が生まれるの？ -->
+      <div class="feature-card reveal">
+        <div class="feature-number">03</div>
+        <h3 class="feature-name">創発</h3>
+        <p class="feature-desc">
+          Emergence &mdash;
+          予想を超えた形が立ち現れる。
+          それは設計されたものではなく、
+          自然に湧き上がるもの。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics -->
+  <section class="metrics reveal">
+    <div class="metrics-inner">
+      <!-- ダメポイント: 数字が印象的だが何を指しているか不明 -->
+      <div>
+        <div class="metric-value">2,847</div>
+        <div class="metric-label">Experiences</div>
+      </div>
+      <div>
+        <div class="metric-value">98.2<small>%</small></div>
+        <div class="metric-label">Resonance</div>
+      </div>
+      <div>
+        <div class="metric-value">156</div>
+        <div class="metric-label">Horizons</div>
+      </div>
+      <div>
+        <div class="metric-value">&infin;</div>
+        <div class="metric-label">Possibilities</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="testimonial reveal" id="voices">
+    <div class="testimonial-inner">
+      <div class="testimonial-mark">&ldquo;</div>
+      <!-- ダメポイント: 感想が抽象的で何を学んだか不明 -->
+      <p class="testimonial-text">
+        ここでの時間は、知識を得るというより、
+        自分自身の中にあった光に気づく体験でした。
+        言葉にできない変化が、確かに起きています。
+      </p>
+      <!-- ダメポイント: 職業が「思索家」←何者？ -->
+      <p class="testimonial-author">K.M. &mdash; 思索家 / Thinker</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="begin">
+    <div class="cta-inner reveal">
+      <p class="cta-label">Your Journey</p>
+      <!-- ダメポイント: 「あなたの旅が、始まる。」←何の旅？料金は？期間は？ -->
+      <h2 class="cta-title">あなたの旅が、<em>始まる。</em></h2>
+      <p class="cta-sub">
+        準備ができたその瞬間が、最良のタイミング。
+        私たちは、ここで待っています。
+      </p>
+      <div class="cta-buttons">
+        <!-- ダメポイント: 「始める」「話を聞く」←何を始める？何の話？ -->
+        <a href="#" class="btn-primary">始める</a>
+        <a href="#" class="btn-secondary">話を聞く</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">G&T</div>
+    <div class="footer-text">&copy; 2026 G&T. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Particle generation
+    const particlesEl = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (15 + Math.random() * 25) + 's';
+      p.style.animationDelay = Math.random() * 20 + 's';
+      p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+      particlesEl.appendChild(p);
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

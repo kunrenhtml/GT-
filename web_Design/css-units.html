@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS単位プレイグラウンド</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        line-height: 1.7;
+        font-size: 16px;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+      }
+
+      header .logo span {
+        color: #5dade2;
+      }
+
+      header .back-link {
+        color: #5dade2;
+        font-size: 0.9rem;
+      }
+
+      header .back-link:hover {
+        text-decoration: underline;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+        color: #fff;
+        text-align: center;
+        padding: 50px 20px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Info bar */
+      .info-bar {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px 28px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .info-bar .info-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .info-bar .info-item strong {
+        color: #2c3e50;
+      }
+
+      .info-bar .info-value {
+        background: #eaf2f8;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-weight: bold;
+        color: #2980b9;
+      }
+
+      /* Section */
+      .section {
+        background: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+      }
+
+      .section h2 {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        border-left: 5px solid #8e44ad;
+        padding-left: 12px;
+        margin-bottom: 8px;
+      }
+
+      .section .desc {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      /* Controls */
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: flex-end;
+        margin-bottom: 20px;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .control-group label {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .control-group input[type="range"] {
+        width: 180px;
+        accent-color: #8e44ad;
+      }
+
+      .control-group select {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        background: #fff;
+      }
+
+      .control-group input[type="number"] {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        width: 100px;
+      }
+
+      .control-group .value-display {
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: #8e44ad;
+        font-weight: bold;
+      }
+
+      /* Preview areas */
+      .preview-container {
+        border: 2px dashed #d5d8dc;
+        border-radius: 8px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        min-height: 80px;
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 0, 0, 0.015) 10px,
+          rgba(0, 0, 0, 0.015) 20px
+        );
+      }
+
+      .preview-box {
+        background: linear-gradient(135deg, #8e44ad, #3498db);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        word-break: break-all;
+      }
+
+      .css-output {
+        margin-top: 12px;
+        background: #2c3e50;
+        color: #5dade2;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        overflow-x: auto;
+      }
+
+      /* Unit reference table */
+      .unit-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+
+      .unit-table th {
+        background: #2c3e50;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      .unit-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .unit-table tr:nth-child(even) td {
+        background: #f8f9fa;
+      }
+
+      .unit-table .unit-name {
+        font-family: monospace;
+        font-weight: bold;
+        color: #8e44ad;
+        font-size: 1rem;
+      }
+
+      .unit-table .unit-type {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        font-weight: bold;
+      }
+
+      .type-absolute {
+        background: #fdebd0;
+        color: #e67e22;
+      }
+
+      .type-relative {
+        background: #d5f5e3;
+        color: #27ae60;
+      }
+
+      .type-viewport {
+        background: #d6eaf8;
+        color: #2980b9;
+      }
+
+      /* Comparison */
+      .comparison-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bar-label {
+        width: 100px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #555;
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      .bar-track {
+        flex: 1;
+        height: 36px;
+        background: #f0f0f0;
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #fff;
+        transition: width 0.5s ease;
+        min-width: fit-content;
+        white-space: nowrap;
+      }
+
+      .bar-fill.px-bar { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+      .bar-fill.em-bar { background: linear-gradient(90deg, #f39c12, #e67e22); }
+      .bar-fill.rem-bar { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+      .bar-fill.percent-bar { background: linear-gradient(90deg, #3498db, #2980b9); }
+      .bar-fill.vw-bar { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+      .bar-fill.vh-bar { background: linear-gradient(90deg, #1abc9c, #16a085); }
+
+      /* Font size playground */
+      .font-preview {
+        padding: 16px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+      }
+
+      /* Two column layout */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 700px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        padding: 8px 18px;
+        border: 2px solid #8e44ad;
+        background: #fff;
+        color: #8e44ad;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+      }
+
+      .tab-btn:hover {
+        background: #f3e5f5;
+      }
+
+      .tab-btn.active {
+        background: #8e44ad;
+        color: #fff;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* Custom input */
+      .custom-input-area {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .custom-input-area input {
+        padding: 8px 14px;
+        border: 2px solid #8e44ad;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: monospace;
+        width: 200px;
+      }
+
+      .custom-input-area button {
+        padding: 8px 18px;
+        background: #8e44ad;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+      }
+
+      .custom-input-area button:hover {
+        background: #732d91;
+      }
+
+      .custom-input-area select {
+        padding: 8px 12px;
+        border: 2px solid #8e44ad;
+        border-radius: 6px;
+        font-size: 0.9rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 0.8rem;
+        color: #999;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">CSS単位 <span>プレイグラウンド</span></div>
+      <a class="back-link" href="../index.html">&larr; トップに戻る</a>
+    </header>
+
+    <div class="hero">
+      <h1>CSS単位を体験しよう</h1>
+      <p>px, em, rem, %, vw, vh など、CSSの様々な単位をリアルタイムで試して違いを理解しましょう。</p>
+    </div>
+
+    <main>
+      <!-- 環境情報バー -->
+      <div class="info-bar" id="infoBar">
+        <div class="info-item">
+          <strong>Viewport幅:</strong>
+          <span class="info-value" id="infoVw">--</span>
+        </div>
+        <div class="info-item">
+          <strong>Viewport高:</strong>
+          <span class="info-value" id="infoVh">--</span>
+        </div>
+        <div class="info-item">
+          <strong>ルートfont-size:</strong>
+          <span class="info-value" id="infoRootFs">--</span>
+        </div>
+        <div class="info-item">
+          <strong>1rem =</strong>
+          <span class="info-value" id="infoRemPx">--</span>
+        </div>
+      </div>
+
+      <!-- 単位一覧表 -->
+      <div class="section">
+        <h2>CSS単位リファレンス</h2>
+        <p class="desc">よく使われるCSS単位の一覧です。種類と特徴を確認しましょう。</p>
+        <table class="unit-table">
+          <thead>
+            <tr>
+              <th>単位</th>
+              <th>種類</th>
+              <th>説明</th>
+              <th>基準</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="unit-name">px</td>
+              <td><span class="unit-type type-absolute">絶対</span></td>
+              <td>ピクセル。最も基本的な単位</td>
+              <td>デバイスピクセル</td>
+            </tr>
+            <tr>
+              <td class="unit-name">em</td>
+              <td><span class="unit-type type-relative">相対</span></td>
+              <td>親要素のfont-sizeに対する倍率</td>
+              <td>親のfont-size</td>
+            </tr>
+            <tr>
+              <td class="unit-name">rem</td>
+              <td><span class="unit-type type-relative">相対</span></td>
+              <td>ルート要素(html)のfont-sizeに対する倍率</td>
+              <td>htmlのfont-size</td>
+            </tr>
+            <tr>
+              <td class="unit-name">%</td>
+              <td><span class="unit-type type-relative">相対</span></td>
+              <td>親要素のサイズに対する割合</td>
+              <td>親要素のサイズ</td>
+            </tr>
+            <tr>
+              <td class="unit-name">vw</td>
+              <td><span class="unit-type type-viewport">ビューポート</span></td>
+              <td>ビューポート幅の1%</td>
+              <td>ブラウザの表示幅</td>
+            </tr>
+            <tr>
+              <td class="unit-name">vh</td>
+              <td><span class="unit-type type-viewport">ビューポート</span></td>
+              <td>ビューポート高さの1%</td>
+              <td>ブラウザの表示高さ</td>
+            </tr>
+            <tr>
+              <td class="unit-name">vmin</td>
+              <td><span class="unit-type type-viewport">ビューポート</span></td>
+              <td>vwとvhの小さい方</td>
+              <td>幅と高さの小さい方</td>
+            </tr>
+            <tr>
+              <td class="unit-name">vmax</td>
+              <td><span class="unit-type type-viewport">ビューポート</span></td>
+              <td>vwとvhの大きい方</td>
+              <td>幅と高さの大きい方</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 1. 幅の比較 -->
+      <div class="section">
+        <h2>幅(width)の単位比較</h2>
+        <p class="desc">同じ数値でも単位が違うとこれだけ差が出ます。数値を変更してみましょう。</p>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>数値</label>
+            <input type="range" id="widthValue" min="1" max="100" value="50" />
+            <span class="value-display" id="widthValueDisplay">50</span>
+          </div>
+          <div class="control-group">
+            <label>親要素のfont-size</label>
+            <input type="range" id="parentFontSize" min="8" max="48" value="16" />
+            <span class="value-display" id="parentFontSizeDisplay">16px</span>
+          </div>
+        </div>
+
+        <div class="comparison-bars" id="widthBars">
+          <div class="bar-row">
+            <span class="bar-label" id="pxLabel">50px</span>
+            <div class="bar-track"><div class="bar-fill px-bar" id="pxBar">50px</div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label" id="emLabel">50em</span>
+            <div class="bar-track"><div class="bar-fill em-bar" id="emBar">800px</div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label" id="remLabel">50rem</span>
+            <div class="bar-track"><div class="bar-fill rem-bar" id="remBar">800px</div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label" id="percentLabel">50%</span>
+            <div class="bar-track"><div class="bar-fill percent-bar" id="percentBar">--</div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label" id="vwLabel">50vw</span>
+            <div class="bar-track"><div class="bar-fill vw-bar" id="vwBar">--</div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label" id="vhLabel">50vh</span>
+            <div class="bar-track"><div class="bar-fill vh-bar" id="vhBar">--</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. フォントサイズ -->
+      <div class="section">
+        <h2>font-size で試す</h2>
+        <p class="desc">各単位でフォントサイズを指定したときの見え方の違いを比較します。</p>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>数値</label>
+            <input type="range" id="fontValue" min="1" max="50" value="20" step="1" />
+            <span class="value-display" id="fontValueDisplay">24</span>
+          </div>
+          <div class="control-group">
+            <label>親のfont-size</label>
+            <input type="range" id="fontParent" min="8" max="48" value="16" />
+            <span class="value-display" id="fontParentDisplay">16px</span>
+          </div>
+        </div>
+
+        <div id="fontPreviews">
+          <div class="font-preview" id="fontPx">
+            <strong style="color:#e74c3c">px:</strong> <span class="sample">ABCあいう 123</span>
+          </div>
+          <div class="font-preview" id="fontEm">
+            <strong style="color:#f39c12">em:</strong> <span class="sample">ABCあいう 123</span>
+          </div>
+          <div class="font-preview" id="fontRem">
+            <strong style="color:#27ae60">rem:</strong> <span class="sample">ABCあいう 123</span>
+          </div>
+          <div class="font-preview" id="fontPercent">
+            <strong style="color:#2980b9">%:</strong> <span class="sample">ABCあいう 123</span>
+          </div>
+          <div class="font-preview" id="fontVw">
+            <strong style="color:#8e44ad">vw:</strong> <span class="sample">ABCあいう 123</span>
+          </div>
+        </div>
+
+        <div class="css-output" id="fontCssOutput"></div>
+      </div>
+
+      <!-- 3. ボックスサイズ自由実験 -->
+      <div class="section">
+        <h2>ボックスサイズ自由実験</h2>
+        <p class="desc">width と height を好きな単位で指定して、ボックスの大きさを確認できます。</p>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>width の値</label>
+            <input type="number" id="boxW" value="200" min="0" max="2000" />
+          </div>
+          <div class="control-group">
+            <label>width の単位</label>
+            <select id="boxWUnit">
+              <option value="px" selected>px</option>
+              <option value="em">em</option>
+              <option value="rem">rem</option>
+              <option value="%">%</option>
+              <option value="vw">vw</option>
+              <option value="vh">vh</option>
+              <option value="vmin">vmin</option>
+              <option value="vmax">vmax</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>height の値</label>
+            <input type="number" id="boxH" value="100" min="0" max="2000" />
+          </div>
+          <div class="control-group">
+            <label>height の単位</label>
+            <select id="boxHUnit">
+              <option value="px" selected>px</option>
+              <option value="em">em</option>
+              <option value="rem">rem</option>
+              <option value="%">%</option>
+              <option value="vw">vw</option>
+              <option value="vh">vh</option>
+              <option value="vmin">vmin</option>
+              <option value="vmax">vmax</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="preview-container" id="boxPreviewContainer" style="height: 400px;">
+          <div class="preview-box" id="boxPreview">BOX</div>
+        </div>
+        <div class="css-output" id="boxCssOutput"></div>
+      </div>
+
+      <!-- 4. margin / padding -->
+      <div class="section">
+        <h2>margin / padding を試す</h2>
+        <p class="desc">余白の指定を異なる単位で行った場合の違いを確認できます。</p>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>margin の値</label>
+            <input type="number" id="mpMargin" value="20" min="0" max="200" />
+          </div>
+          <div class="control-group">
+            <label>margin の単位</label>
+            <select id="mpMarginUnit">
+              <option value="px" selected>px</option>
+              <option value="em">em</option>
+              <option value="rem">rem</option>
+              <option value="%">%</option>
+              <option value="vw">vw</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>padding の値</label>
+            <input type="number" id="mpPadding" value="20" min="0" max="200" />
+          </div>
+          <div class="control-group">
+            <label>padding の単位</label>
+            <select id="mpPaddingUnit">
+              <option value="px" selected>px</option>
+              <option value="em">em</option>
+              <option value="rem">rem</option>
+              <option value="%">%</option>
+              <option value="vw">vw</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="preview-container" id="mpContainer">
+          <div id="mpOuter" style="background: rgba(52,152,219,0.2); border: 2px dashed #3498db; display: inline-block;">
+            <div id="mpInner" style="background: linear-gradient(135deg, #8e44ad, #3498db); color: #fff; font-weight: bold; font-size: 0.85rem; border-radius: 6px; min-width: 120px; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+              コンテンツ
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: #888;">
+            青い点線 = margin 領域 / 紫のボックス内側 = padding 領域
+          </div>
+        </div>
+        <div class="css-output" id="mpCssOutput"></div>
+      </div>
+
+      <!-- 5. 自由入力 CSS -->
+      <div class="section">
+        <h2>自由入力で試す</h2>
+        <p class="desc">任意のCSS値を入力して、ボックスに適用できます。例: <code>width: 50vw</code>, <code>font-size: 3rem</code></p>
+
+        <div class="custom-input-area">
+          <select id="customProp">
+            <option value="width">width</option>
+            <option value="height">height</option>
+            <option value="font-size">font-size</option>
+            <option value="margin">margin</option>
+            <option value="padding">padding</option>
+            <option value="border-radius">border-radius</option>
+            <option value="gap">gap</option>
+            <option value="max-width">max-width</option>
+            <option value="min-height">min-height</option>
+          </select>
+          <input type="text" id="customValue" placeholder="例: 50vw, 3rem, 200px" />
+          <button onclick="applyCustom()">適用</button>
+          <button onclick="resetCustom()" style="background: #95a5a6;">リセット</button>
+        </div>
+
+        <div class="preview-container" style="height: 300px; margin-top: 16px;">
+          <div class="preview-box" id="customBox" style="width: 200px; height: 100px;">
+            自由ボックス
+          </div>
+        </div>
+        <div class="css-output" id="customCssOutput">/* ここに適用したCSSが表示されます */</div>
+      </div>
+
+      <!-- 6. em のネスト問題 -->
+      <div class="section">
+        <h2>em のネスト問題を体験</h2>
+        <p class="desc">em は親のfont-sizeを基準にするため、ネストすると値が倍々に大きくなります。rem と比較してみましょう。</p>
+
+        <div class="controls">
+          <div class="control-group">
+            <label>font-size の値</label>
+            <input type="range" id="nestValue" min="0.5" max="3" value="1.5" step="0.1" />
+            <span class="value-display" id="nestValueDisplay">1.5</span>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <h3 style="font-size: 0.95rem; color: #e67e22; margin-bottom: 10px;">em の場合（どんどん大きくなる）</h3>
+            <div id="emNest" style="border: 1px solid #eee; padding: 10px; border-radius: 6px;">
+              <!-- JS で生成 -->
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size: 0.95rem; color: #27ae60; margin-bottom: 10px;">rem の場合（常に一定）</h3>
+            <div id="remNest" style="border: 1px solid #eee; padding: 10px; border-radius: 6px;">
+              <!-- JS で生成 -->
+            </div>
+          </div>
+        </div>
+        <div class="css-output" id="nestCssOutput"></div>
+      </div>
+
+      <!-- 7. レスポンシブ体験 -->
+      <div class="section">
+        <h2>ビューポート単位でレスポンシブ体験</h2>
+        <p class="desc">ブラウザの幅を変えると、vw / vh のボックスがリアルタイムで変化します。ウィンドウをリサイズしてみてください。</p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+          <div style="flex: 1; min-width: 200px;">
+            <div style="text-align: center; font-size: 0.85rem; font-weight: bold; color: #8e44ad; margin-bottom: 6px;">30vw x 20vh</div>
+            <div class="preview-box" style="width: 30vw; height: 20vh;">30vw x 20vh</div>
+          </div>
+          <div style="flex: 1; min-width: 200px;">
+            <div style="text-align: center; font-size: 0.85rem; font-weight: bold; color: #2980b9; margin-bottom: 6px;">200px x 100px (固定)</div>
+            <div class="preview-box" style="width: 200px; height: 100px; background: linear-gradient(135deg, #3498db, #2980b9);">200px x 100px</div>
+          </div>
+          <div style="flex: 1; min-width: 200px;">
+            <div style="text-align: center; font-size: 0.85rem; font-weight: bold; color: #27ae60; margin-bottom: 6px;">50% x 15vmin</div>
+            <div class="preview-box" style="width: 50%; height: 15vmin; background: linear-gradient(135deg, #2ecc71, #27ae60);">50% x 15vmin</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>&copy; 2026 訓練校 学習サイト</footer>
+
+    <script>
+      // ===== 環境情報の更新 =====
+      function updateInfo() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        document.getElementById("infoVw").textContent = vw + "px";
+        document.getElementById("infoVh").textContent = vh + "px";
+        document.getElementById("infoRootFs").textContent = rootFs + "px";
+        document.getElementById("infoRemPx").textContent = rootFs + "px";
+      }
+      updateInfo();
+      window.addEventListener("resize", updateInfo);
+
+      // ===== 1. 幅の比較 =====
+      const widthSlider = document.getElementById("widthValue");
+      const parentFsSlider = document.getElementById("parentFontSize");
+      const widthDisplay = document.getElementById("widthValueDisplay");
+      const parentFsDisplay = document.getElementById("parentFontSizeDisplay");
+
+      function updateWidthBars() {
+        const val = parseFloat(widthSlider.value);
+        const parentFs = parseFloat(parentFsSlider.value);
+        const rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const trackWidth = document.querySelector(".bar-track").offsetWidth;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        widthDisplay.textContent = val;
+        parentFsDisplay.textContent = parentFs + "px";
+
+        const calcs = {
+          px: val,
+          em: val * parentFs,
+          rem: val * rootFs,
+          percent: (val / 100) * trackWidth,
+          vw: (val / 100) * vw,
+          vh: (val / 100) * vh,
+        };
+
+        const maxPx = Math.max(...Object.values(calcs), 1);
+
+        function setBar(id, labelId, unit, pxVal, label) {
+          const bar = document.getElementById(id);
+          const lbl = document.getElementById(labelId);
+          const pct = Math.min((pxVal / trackWidth) * 100, 100);
+          bar.style.width = Math.max(pct, 5) + "%";
+          bar.textContent = Math.round(pxVal) + "px";
+          lbl.textContent = val + unit;
+        }
+
+        setBar("pxBar", "pxLabel", "px", calcs.px);
+        setBar("emBar", "emLabel", "em", calcs.em);
+        setBar("remBar", "remLabel", "rem", calcs.rem);
+        setBar("percentBar", "percentLabel", "%", calcs.percent);
+        setBar("vwBar", "vwLabel", "vw", calcs.vw);
+        setBar("vhBar", "vhLabel", "vh", calcs.vh);
+      }
+
+      widthSlider.addEventListener("input", updateWidthBars);
+      parentFsSlider.addEventListener("input", updateWidthBars);
+      window.addEventListener("resize", updateWidthBars);
+      updateWidthBars();
+
+      // ===== 2. フォントサイズ =====
+      const fontSlider = document.getElementById("fontValue");
+      const fontParentSlider = document.getElementById("fontParent");
+      const fontDisplay = document.getElementById("fontValueDisplay");
+      const fontParentDisplay = document.getElementById("fontParentDisplay");
+
+      function updateFontPreviews() {
+        const val = parseFloat(fontSlider.value);
+        const parentFs = parseFloat(fontParentSlider.value);
+        fontDisplay.textContent = val;
+        fontParentDisplay.textContent = parentFs + "px";
+
+        const rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const vw = window.innerWidth;
+
+        // 同じ数値をそのまま各単位で適用 → 違いがはっきり見える
+        const pxEl = document.getElementById("fontPx");
+        const emEl = document.getElementById("fontEm");
+        const remEl = document.getElementById("fontRem");
+        const pctEl = document.getElementById("fontPercent");
+        const vwEl = document.getElementById("fontVw");
+
+        // px: そのままの数値
+        pxEl.querySelector(".sample").style.fontSize = val + "px";
+
+        // em: 親のfont-sizeに対する倍率
+        emEl.style.fontSize = parentFs + "px";
+        emEl.querySelector(".sample").style.fontSize = val + "em";
+
+        // rem: ルートのfont-sizeに対する倍率
+        remEl.querySelector(".sample").style.fontSize = val + "rem";
+
+        // %: 親のfont-sizeに対するパーセント
+        pctEl.style.fontSize = parentFs + "px";
+        pctEl.querySelector(".sample").style.fontSize = val + "%";
+
+        // vw: ビューポート幅に対するパーセント
+        vwEl.querySelector(".sample").style.fontSize = val + "vw";
+
+        // 実際に何pxになるかを計算して表示
+        const pxOfPx = val;
+        const pxOfEm = val * parentFs;
+        const pxOfRem = val * rootFs;
+        const pxOfPct = (val / 100) * parentFs;
+        const pxOfVw = (val / 100) * vw;
+
+        const css = [
+          `/* 同じ数値「${val}」でも単位で大きさが全然違う！ */`,
+          `font-size: ${val}px;    → ${Math.round(pxOfPx)}px`,
+          `font-size: ${val}em;    → ${Math.round(pxOfEm)}px  （親=${parentFs}px × ${val}）`,
+          `font-size: ${val}rem;   → ${Math.round(pxOfRem)}px  （root=${rootFs}px × ${val}）`,
+          `font-size: ${val}%;     → ${pxOfPct.toFixed(1)}px  （親=${parentFs}px の ${val}%）`,
+          `font-size: ${val}vw;    → ${Math.round(pxOfVw)}px  （viewport=${vw}px の ${val}%）`,
+        ];
+        document.getElementById("fontCssOutput").textContent = css.join("\n");
+      }
+
+      fontSlider.addEventListener("input", updateFontPreviews);
+      fontParentSlider.addEventListener("input", updateFontPreviews);
+      window.addEventListener("resize", updateFontPreviews);
+      updateFontPreviews();
+
+      // ===== 3. ボックスサイズ =====
+      function updateBoxPreview() {
+        const w = document.getElementById("boxW").value;
+        const wUnit = document.getElementById("boxWUnit").value;
+        const h = document.getElementById("boxH").value;
+        const hUnit = document.getElementById("boxHUnit").value;
+        const box = document.getElementById("boxPreview");
+
+        box.style.width = w + wUnit;
+        box.style.height = h + hUnit;
+        box.textContent = `${w}${wUnit} x ${h}${hUnit}`;
+
+        const computed = getComputedStyle(box);
+        const css = [
+          `width: ${w}${wUnit};   /* = ${computed.width} */`,
+          `height: ${h}${hUnit};  /* = ${computed.height} */`,
+        ];
+        document.getElementById("boxCssOutput").textContent = css.join("\n");
+      }
+
+      ["boxW", "boxWUnit", "boxH", "boxHUnit"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateBoxPreview);
+      });
+      updateBoxPreview();
+
+      // ===== 4. margin / padding =====
+      function updateMP() {
+        const m = document.getElementById("mpMargin").value;
+        const mU = document.getElementById("mpMarginUnit").value;
+        const p = document.getElementById("mpPadding").value;
+        const pU = document.getElementById("mpPaddingUnit").value;
+        const outer = document.getElementById("mpOuter");
+        const inner = document.getElementById("mpInner");
+
+        outer.style.padding = m + mU;
+        inner.style.padding = p + pU;
+
+        const computedOuter = getComputedStyle(outer);
+        const computedInner = getComputedStyle(inner);
+        const css = [
+          `/* margin (外側の余白) */`,
+          `margin: ${m}${mU};  /* = ${computedOuter.padding} */`,
+          ``,
+          `/* padding (内側の余白) */`,
+          `padding: ${p}${pU};  /* = ${computedInner.padding} */`,
+        ];
+        document.getElementById("mpCssOutput").textContent = css.join("\n");
+      }
+
+      ["mpMargin", "mpMarginUnit", "mpPadding", "mpPaddingUnit"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateMP);
+      });
+      updateMP();
+
+      // ===== 5. 自由入力 =====
+      const customStyles = {};
+
+      function applyCustom() {
+        const prop = document.getElementById("customProp").value;
+        const val = document.getElementById("customValue").value.trim();
+        if (!val) return;
+        const box = document.getElementById("customBox");
+        box.style[toCamelCase(prop)] = val;
+        customStyles[prop] = val;
+        updateCustomOutput();
+      }
+
+      function resetCustom() {
+        const box = document.getElementById("customBox");
+        box.removeAttribute("style");
+        box.style.width = "200px";
+        box.style.height = "100px";
+        for (const key in customStyles) delete customStyles[key];
+        customStyles["width"] = "200px";
+        customStyles["height"] = "100px";
+        updateCustomOutput();
+      }
+
+      function updateCustomOutput() {
+        const box = document.getElementById("customBox");
+        const computed = getComputedStyle(box);
+        const lines = Object.entries(customStyles).map(([k, v]) => {
+          const compVal = computed[toCamelCase(k)];
+          return `${k}: ${v};  /* computed: ${compVal} */`;
+        });
+        document.getElementById("customCssOutput").textContent =
+          lines.length ? lines.join("\n") : "/* ここに適用したCSSが表示されます */";
+      }
+
+      function toCamelCase(str) {
+        return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      }
+
+      // ===== 6. em ネスト問題 =====
+      const nestSlider = document.getElementById("nestValue");
+      const nestDisplay = document.getElementById("nestValueDisplay");
+
+      function updateNest() {
+        const val = parseFloat(nestSlider.value);
+        nestDisplay.textContent = val;
+
+        const emContainer = document.getElementById("emNest");
+        const remContainer = document.getElementById("remNest");
+        emContainer.innerHTML = "";
+        remContainer.innerHTML = "";
+
+        const rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        let currentFs = rootFs;
+
+        let emParent = emContainer;
+        let remParent = remContainer;
+
+        for (let i = 1; i <= 5; i++) {
+          currentFs = currentFs * val;
+          const actualRemFs = rootFs * val;
+
+          // em
+          const emDiv = document.createElement("div");
+          emDiv.style.fontSize = val + "em";
+          emDiv.style.padding = "6px";
+          emDiv.style.borderLeft = "3px solid #e67e22";
+          emDiv.style.marginTop = "4px";
+          emDiv.innerHTML = `<span style="font-size:0.7em;color:#888;">Level ${i} (${val}em = ${Math.round(currentFs)}px)</span><br>テキスト`;
+          emParent.appendChild(emDiv);
+          emParent = emDiv;
+
+          // rem
+          const remDiv = document.createElement("div");
+          remDiv.style.fontSize = val + "rem";
+          remDiv.style.padding = "6px";
+          remDiv.style.borderLeft = "3px solid #27ae60";
+          remDiv.style.marginTop = "4px";
+          remDiv.innerHTML = `<span style="font-size:0.7em;color:#888;">Level ${i} (${val}rem = ${Math.round(actualRemFs)}px)</span><br>テキスト`;
+          remParent.appendChild(remDiv);
+          remParent = remDiv;
+        }
+
+        document.getElementById("nestCssOutput").textContent = [
+          `/* em: ${val}em を5段ネスト → 最終サイズ: ${Math.round(rootFs * Math.pow(val, 5))}px */`,
+          `/* rem: ${val}rem を5段ネスト → 常に: ${Math.round(rootFs * val)}px */`,
+          `/* rem はルート基準なのでネストしても変化しない！ */`,
+        ].join("\n");
+      }
+
+      nestSlider.addEventListener("input", updateNest);
+      updateNest();
+    </script>
+  </body>
+</html>

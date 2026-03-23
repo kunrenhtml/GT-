@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G&T — プログラミングスクール</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+       ═══════════════════════════════════════ */
+    :root {
+      --navy-950: #040d1a;
+      --navy-900: #0a1628;
+      --navy-800: #0f2240;
+      --navy-700: #163360;
+      --navy-600: #1e4480;
+      --blue-500: #2563eb;
+      --blue-400: #3b82f6;
+      --blue-300: #60a5fa;
+      --sky-100: #dbeafe;
+      --sky-50: #eff6ff;
+      --amber-400: #f59e0b;
+      --amber-300: #fbbf24;
+      --white: #ffffff;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 8rem;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+    }
+
+    /* ═══════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--gray-800);
+      background: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ═══════════════════════════════════════
+       UTILITY
+       ═══════════════════════════════════════ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+
+    /* ═══════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-200);
+      transition: box-shadow 0.3s;
+    }
+
+    .nav.scrolled {
+      box-shadow: 0 4px 24px rgba(10, 22, 40, 0.08);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav__logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--blue-500);
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      list-style: none;
+    }
+
+    .nav__link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      transition: color 0.2s;
+    }
+
+    .nav__link:hover {
+      color: var(--blue-500);
+    }
+
+    .nav__cta {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--blue-500);
+      padding: 0.6rem 1.4rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .nav__cta:hover {
+      background: var(--blue-400);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile menu */
+    .nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav__toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy-900);
+      margin: 5px 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* ═══════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════ */
+    .hero {
+      padding: calc(72px + var(--space-3xl)) 0 var(--space-3xl);
+      background: linear-gradient(165deg, var(--sky-50) 0%, var(--white) 40%, var(--white) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: var(--sky-100);
+      color: var(--blue-500);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: var(--font-display);
+      margin-bottom: var(--space-md);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+    }
+
+    .hero__badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue-500);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--navy-900);
+      margin-bottom: var(--space-md);
+      letter-spacing: -0.02em;
+    }
+
+    .hero__title-accent {
+      color: var(--blue-500);
+      position: relative;
+    }
+
+    .hero__title-accent::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--amber-300);
+      opacity: 0.5;
+      border-radius: 3px;
+      z-index: -1;
+    }
+
+    .hero__desc {
+      font-size: 1.1rem;
+      color: var(--gray-500);
+      max-width: 480px;
+      margin-bottom: var(--space-lg);
+      line-height: 1.8;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    .btn {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn--primary {
+      background: var(--blue-500);
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn--primary:hover {
+      background: var(--blue-400);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--gray-600);
+      border: 1.5px solid var(--gray-200);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--blue-300);
+      color: var(--blue-500);
+    }
+
+    /* Code Editor in Hero */
+    .hero__editor {
+      background: var(--navy-900);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(10, 22, 40, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      position: relative;
+    }
+
+    .editor__bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      background: var(--navy-950);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .editor__dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .editor__dot--red { background: #ff5f57; }
+    .editor__dot--yellow { background: #ffbd2e; }
+    .editor__dot--green { background: #28c840; }
+
+    .editor__tab {
+      margin-left: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      background: var(--navy-800);
+      padding: 4px 14px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .editor__body {
+      padding: 24px;
+      min-height: 280px;
+    }
+
+    .editor__line {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .editor__num {
+      color: var(--gray-500);
+      min-width: 32px;
+      text-align: right;
+      margin-right: 20px;
+      user-select: none;
+      opacity: 0.5;
+    }
+
+    .editor__code {
+      color: var(--gray-400);
+    }
+
+    .code-keyword { color: #c678dd; }
+    .code-func { color: #61afef; }
+    .code-string { color: #98c379; }
+    .code-comment { color: #5c6370; font-style: italic; }
+    .code-var { color: #e5c07b; }
+    .code-bracket { color: var(--gray-400); }
+    .code-operator { color: #56b6c2; }
+
+    .editor__cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--amber-400);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ═══════════════════════════════════════
+       STATS BAR
+       ═══════════════════════════════════════ */
+    .stats {
+      padding: var(--space-xl) 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .stats__inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    .stats__number {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stats__number span {
+      color: var(--blue-500);
+    }
+
+    .stats__label {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+    }
+
+    /* ═══════════════════════════════════════
+       FEATURES
+       ═══════════════════════════════════════ */
+    .features {
+      padding: var(--space-3xl) 0;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--blue-500);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: var(--space-sm);
+      letter-spacing: -0.01em;
+    }
+
+    .section-desc {
+      color: var(--gray-500);
+      max-width: 520px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .features__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .feature-card {
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--blue-500);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--blue-300);
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card__icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--sky-100);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-sm);
+      font-size: 1.3rem;
+    }
+
+    .feature-card__title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card__desc {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════
+       COURSES
+       ═══════════════════════════════════════ */
+    .courses {
+      padding: var(--space-3xl) 0;
+      background: var(--sky-50);
+    }
+
+    .courses__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .course-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s;
+    }
+
+    .course-card:hover {
+      box-shadow: 0 12px 40px rgba(10, 22, 40, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .course-card__header {
+      padding: var(--space-md) var(--space-md) 0;
+    }
+
+    .course-card__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      margin-bottom: var(--space-sm);
+    }
+
+    .course-card__tag--beginner {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .course-card__tag--intermediate {
+      background: var(--sky-100);
+      color: var(--blue-500);
+    }
+
+    .course-card__tag--advanced {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .course-card__icon-area {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, var(--sky-50), var(--white));
+      border-radius: var(--radius-sm);
+      margin: 0 var(--space-md);
+    }
+
+    .course-card__body {
+      padding: var(--space-md);
+    }
+
+    .course-card__title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 0.4rem;
+    }
+
+    .course-card__desc {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      margin-bottom: var(--space-sm);
+      line-height: 1.7;
+    }
+
+    .course-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .course-card__duration {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--gray-400);
+    }
+
+    .course-card__link {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--blue-500);
+      transition: gap 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .course-card__link:hover {
+      gap: 0.6rem;
+    }
+
+    /* ═══════════════════════════════════════
+       HOW IT WORKS (STEPS)
+       ═══════════════════════════════════════ */
+    .steps {
+      padding: var(--space-3xl) 0;
+    }
+
+    .steps__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .steps__header .section-desc {
+      margin: 0 auto;
+    }
+
+    .steps__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      position: relative;
+    }
+
+    .steps__grid::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 16%;
+      right: 16%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--blue-300) 0,
+        var(--blue-300) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step__number {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-md);
+      background: var(--white);
+      border: 2px solid var(--blue-500);
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--blue-500);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step__title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 0.4rem;
+    }
+
+    .step__desc {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       TESTIMONIALS
+       ═══════════════════════════════════════ */
+    .testimonials {
+      padding: var(--space-3xl) 0;
+      background: var(--navy-900);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonials::before {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+    }
+
+    .testimonials .section-label {
+      color: var(--blue-300);
+    }
+
+    .testimonials .section-title {
+      color: var(--white);
+    }
+
+    .testimonials .section-desc {
+      color: var(--gray-400);
+    }
+
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .testimonial {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      transition: border-color 0.3s;
+    }
+
+    .testimonial:hover {
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .testimonial__quote {
+      font-size: 0.95rem;
+      color: var(--gray-200);
+      line-height: 1.8;
+      margin-bottom: var(--space-md);
+      position: relative;
+      padding-left: var(--space-md);
+    }
+
+    .testimonial__quote::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      bottom: 4px;
+      width: 3px;
+      background: var(--blue-500);
+      border-radius: 2px;
+    }
+
+    .testimonial__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .testimonial__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--navy-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--blue-300);
+    }
+
+    .testimonial__name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .testimonial__role {
+      font-size: 0.78rem;
+      color: var(--gray-400);
+    }
+
+    /* ═══════════════════════════════════════
+       CTA
+       ═══════════════════════════════════════ */
+    .cta {
+      padding: var(--space-3xl) 0;
+      text-align: center;
+    }
+
+    .cta__box {
+      background: linear-gradient(135deg, var(--sky-50), var(--white));
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta__box::before {
+      content: '{ }';
+      font-family: var(--font-mono);
+      font-size: 12rem;
+      color: rgba(37, 99, 235, 0.03);
+      position: absolute;
+      top: -20px;
+      right: 40px;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .cta__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta__desc {
+      color: var(--gray-500);
+      max-width: 480px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .cta__form {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .cta__input {
+      flex: 1;
+      padding: 0.85rem 1.2rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .cta__input:focus {
+      border-color: var(--blue-500);
+    }
+
+    .cta__input::placeholder {
+      color: var(--gray-400);
+    }
+
+    /* ═══════════════════════════════════════
+       FAQ
+       ═══════════════════════════════════════ */
+    .faq {
+      padding: 0 0 var(--space-3xl);
+    }
+
+    .faq__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .faq__list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq__item {
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .faq__question {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: var(--space-md) 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s;
+    }
+
+    .faq__question:hover {
+      color: var(--blue-500);
+    }
+
+    .faq__icon {
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+      color: var(--blue-500);
+      flex-shrink: 0;
+      margin-left: var(--space-sm);
+    }
+
+    .faq__item.active .faq__icon {
+      transform: rotate(45deg);
+    }
+
+    .faq__answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq__item.active .faq__answer {
+      max-height: 200px;
+    }
+
+    .faq__answer p {
+      padding-bottom: var(--space-md);
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════ */
+    .footer {
+      background: var(--navy-950);
+      color: var(--gray-400);
+      padding: var(--space-xl) 0 var(--space-lg);
+    }
+
+    .footer__inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .footer__brand {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: var(--space-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .footer__desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .footer__heading {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-sm);
+    }
+
+    .footer__links {
+      list-style: none;
+    }
+
+    .footer__links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer__links a {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      transition: color 0.2s;
+    }
+
+    .footer__links a:hover {
+      color: var(--blue-300);
+    }
+
+    .footer__bottom {
+      margin-top: var(--space-xl);
+      padding-top: var(--space-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .features__grid,
+      .courses__grid,
+      .testimonials__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-lg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav__links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--gray-200);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      }
+
+      .nav__links.open {
+        display: flex;
+      }
+
+      .nav__toggle {
+        display: block;
+      }
+
+      .hero__inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+
+      .hero__editor {
+        max-width: 100%;
+      }
+
+      .stats__inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+      }
+
+      .features__grid,
+      .courses__grid,
+      .steps__grid,
+      .testimonials__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps__grid::before {
+        display: none;
+      }
+
+      .cta__form {
+        flex-direction: column;
+      }
+
+      .footer__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer__bottom {
+        flex-direction: column;
+        gap: var(--space-sm);
+        text-align: center;
+      }
+    }
+
+    /* ═══════════════════════════════════════
+       ANIMATIONS
+       ═══════════════════════════════════════ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" role="navigation" aria-label="メインナビゲーション">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo">
+        <span class="nav__logo-mark">G&T</span>
+        G&T
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#features" class="nav__link">特徴</a></li>
+        <li><a href="#courses" class="nav__link">コース</a></li>
+        <li><a href="#steps" class="nav__link">学び方</a></li>
+        <li><a href="#testimonials" class="nav__link">受講者の声</a></li>
+        <li><a href="#faq" class="nav__link">FAQ</a></li>
+        <li><button class="nav__cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">無料体験に申し込む</button></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="メニュー" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <div class="hero__badge">受講生募集中</div>
+        <h1 class="hero__title">
+          ゼロからはじめる<br>
+          <span class="hero__title-accent">プログラミング</span>
+        </h1>
+        <p class="hero__desc">
+          G&Tは、完全初心者のためのプログラミングスクール。
+          一人ひとりに寄り添うメンターと、実践的なカリキュラムで
+          あなたのキャリアチェンジを支えます。
+        </p>
+        <div class="hero__actions">
+          <button class="btn btn--primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+            無料で始める →
+          </button>
+          <a href="#courses" class="btn btn--ghost">コースを見る</a>
+        </div>
+      </div>
+
+      <div class="hero__editor" aria-hidden="true">
+        <div class="editor__bar">
+          <span class="editor__dot editor__dot--red"></span>
+          <span class="editor__dot editor__dot--yellow"></span>
+          <span class="editor__dot editor__dot--green"></span>
+          <span class="editor__tab">first_program.py</span>
+        </div>
+        <div class="editor__body" id="editorBody">
+          <!-- Typed content will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section class="stats">
+    <div class="container stats__inner">
+      <div class="fade-in">
+        <div class="stats__number">2,500<span>+</span></div>
+        <div class="stats__label">卒業生</div>
+      </div>
+      <div class="fade-in">
+        <div class="stats__number">98<span>%</span></div>
+        <div class="stats__label">受講満足度</div>
+      </div>
+      <div class="fade-in">
+        <div class="stats__number">87<span>%</span></div>
+        <div class="stats__label">転職成功率</div>
+      </div>
+      <div class="fade-in">
+        <div class="stats__number">24<span>h</span></div>
+        <div class="stats__label">質問対応</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-label">// features</div>
+      <h2 class="section-title">G&Tが選ばれる理由</h2>
+      <p class="section-desc">
+        はじめてコードを書く方でも安心。挫折しない仕組みが揃っています。
+      </p>
+
+      <div class="features__grid">
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">専属メンター制度</h3>
+          <p class="feature-card__desc">
+            経験豊富なエンジニアが1対1であなたの学習をサポート。つまずきポイントを一緒に解決します。
+          </p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">実践型カリキュラム</h3>
+          <p class="feature-card__desc">
+            動画を見るだけでなく、実際にアプリを作りながら学ぶ。最終課題ではオリジナル作品を開発。
+          </p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">完全オンライン</h3>
+          <p class="feature-card__desc">
+            自宅から参加可能。ライブ授業の録画もあるので、自分のペースで繰り返し学べます。
+          </p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">転職サポート</h3>
+          <p class="feature-card__desc">
+            履歴書添削から面接対策まで、キャリアアドバイザーが転職活動をトータル支援します。
+          </p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">24時間チャットサポート</h3>
+          <p class="feature-card__desc">
+            深夜の勉強中でも大丈夫。質問はチャットで24時間受付。平均30分以内に回答します。
+          </p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">コードレビュー</h3>
+          <p class="feature-card__desc">
+            課題のコードは現役エンジニアがレビュー。独学では気づけない改善点をフィードバック。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COURSES ===== -->
+  <section class="courses" id="courses">
+    <div class="container">
+      <div class="section-label">// courses</div>
+      <h2 class="section-title">コース一覧</h2>
+      <p class="section-desc">あなたの目標に合ったコースを選べます。</p>
+
+      <div class="courses__grid">
+        <div class="course-card fade-in">
+          <div class="course-card__header">
+            <span class="course-card__tag course-card__tag--beginner">初心者向け</span>
+          </div>
+          <div class="course-card__icon-area">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--blue-400)" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="course-card__body">
+            <h3 class="course-card__title">Web開発 基礎コース</h3>
+            <p class="course-card__desc">HTML/CSS/JavaScriptの基礎から学び、はじめてのWebサイトを公開するまで。</p>
+            <div class="course-card__meta">
+              <span class="course-card__duration">3ヶ月 / 週10時間</span>
+              <a href="#" class="course-card__link">詳細 →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card fade-in">
+          <div class="course-card__header">
+            <span class="course-card__tag course-card__tag--beginner">初心者向け</span>
+          </div>
+          <div class="course-card__icon-area">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--blue-400)" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
+          <div class="course-card__body">
+            <h3 class="course-card__title">Python プログラミング入門</h3>
+            <p class="course-card__desc">Pythonの基本文法からデータ分析・自動化ツール作成まで幅広くカバー。</p>
+            <div class="course-card__meta">
+              <span class="course-card__duration">2ヶ月 / 週8時間</span>
+              <a href="#" class="course-card__link">詳細 →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card fade-in">
+          <div class="course-card__header">
+            <span class="course-card__tag course-card__tag--intermediate">中級者向け</span>
+          </div>
+          <div class="course-card__icon-area">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--blue-400)" stroke-width="1.5">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8l3 3-3 3"/><line x1="13" y1="14" x2="17" y2="14"/>
+            </svg>
+          </div>
+          <div class="course-card__body">
+            <h3 class="course-card__title">フルスタック開発コース</h3>
+            <p class="course-card__desc">React + Node.jsでモダンなWebアプリケーションを一から構築する実践講座。</p>
+            <div class="course-card__meta">
+              <span class="course-card__duration">4ヶ月 / 週15時間</span>
+              <a href="#" class="course-card__link">詳細 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STEPS ===== -->
+  <section class="steps" id="steps">
+    <div class="container">
+      <div class="steps__header">
+        <div class="section-label">// how it works</div>
+        <h2 class="section-title">学習の流れ</h2>
+        <p class="section-desc">3つのステップで、未経験からエンジニアへ。</p>
+      </div>
+
+      <div class="steps__grid">
+        <div class="step fade-in">
+          <div class="step__number">1</div>
+          <h3 class="step__title">無料カウンセリング</h3>
+          <p class="step__desc">あなたの目標やスキルレベルに合わせて最適なコースをご提案します。</p>
+        </div>
+        <div class="step fade-in">
+          <div class="step__number">2</div>
+          <h3 class="step__title">メンターと学習開始</h3>
+          <p class="step__desc">オリジナル教材と専属メンターのサポートで、実践的にスキルを習得。</p>
+        </div>
+        <div class="step fade-in">
+          <div class="step__number">3</div>
+          <h3 class="step__title">ポートフォリオ完成・転職</h3>
+          <p class="step__desc">オリジナル作品を完成させ、転職サポートでエンジニアとしてのキャリアをスタート。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-label">// testimonials</div>
+      <h2 class="section-title">受講者の声</h2>
+      <p class="section-desc">G&Tでキャリアチェンジを実現した卒業生たち。</p>
+
+      <div class="testimonials__grid">
+        <div class="testimonial fade-in">
+          <p class="testimonial__quote">
+            営業職からエンジニアに転身しました。メンターが根気強く教えてくれたおかげで、未経験でも3ヶ月で自作アプリを完成させることができました。
+          </p>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar">TK</div>
+            <div>
+              <div class="testimonial__name">田中 健太</div>
+              <div class="testimonial__role">元・営業 → Webエンジニア</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial fade-in">
+          <p class="testimonial__quote">
+            子育てしながらの受講でしたが、完全オンラインなので自分のペースで学べました。今は在宅でフリーランスとして活動しています。
+          </p>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar">SM</div>
+            <div>
+              <div class="testimonial__name">佐藤 美咲</div>
+              <div class="testimonial__role">主婦 → フリーランスエンジニア</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial fade-in">
+          <p class="testimonial__quote">
+            文系出身で不安でしたが、カリキュラムが本当にゼロから丁寧で、挫折せずに完走できました。24時間チャットサポートにも何度も助けられました。
+          </p>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar">YH</div>
+            <div>
+              <div class="testimonial__name">山本 悠</div>
+              <div class="testimonial__role">文学部卒 → バックエンドエンジニア</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta" id="cta">
+    <div class="container">
+      <div class="cta__box fade-in">
+        <h2 class="cta__title">まずは無料体験から</h2>
+        <p class="cta__desc">
+          メールアドレスを入力するだけ。無料体験レッスンで、プログラミングの楽しさを体感してください。
+        </p>
+        <form class="cta__form" onsubmit="handleSubmit(event)">
+          <input type="email" class="cta__input" placeholder="メールアドレスを入力" required aria-label="メールアドレス">
+          <button type="submit" class="btn btn--primary">無料体験に申し込む</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq__header">
+        <div class="section-label">// faq</div>
+        <h2 class="section-title">よくある質問</h2>
+      </div>
+
+      <div class="faq__list">
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            プログラミング未経験でも大丈夫ですか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>はい、受講者の85%がプログラミング未経験からスタートしています。基礎の基礎から丁寧に進めるカリキュラムなので、安心して受講いただけます。</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            仕事をしながらでも受講できますか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>もちろんです。多くの受講者が仕事と両立しています。週10〜15時間の学習時間を確保できれば、無理なくカリキュラムを進められます。</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            受講料はいくらですか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>コースによって異なります。無料カウンセリングで詳しくご案内いたします。分割払いにも対応しておりますので、お気軽にご相談ください。</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            途中で退会できますか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>受講開始から14日以内であれば全額返金保証があります。それ以降も所定の手続きで退会可能です。詳しくはカウンセリング時にご説明します。</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            パソコンのスペックはどのくらい必要ですか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>メモリ8GB以上のWindows/Macであれば問題ありません。推奨スペックについて不安な方は、カウンセリングでご相談ください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand">
+            <span class="nav__logo-mark">G&T</span>
+            G&T
+          </div>
+          <p class="footer__desc">
+            ゼロからプロのエンジニアへ。G&Tは初心者のためのプログラミングスクールです。
+          </p>
+        </div>
+        <div>
+          <h3 class="footer__heading">コース</h3>
+          <ul class="footer__links">
+            <li><a href="#">Web開発 基礎</a></li>
+            <li><a href="#">Python 入門</a></li>
+            <li><a href="#">フルスタック開発</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">サポート</h3>
+          <ul class="footer__links">
+            <li><a href="#">よくある質問</a></li>
+            <li><a href="#">お問い合わせ</a></li>
+            <li><a href="#">利用規約</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">企業情報</h3>
+          <ul class="footer__links">
+            <li><a href="#">会社概要</a></li>
+            <li><a href="#">採用情報</a></li>
+            <li><a href="#">プライバシーポリシー</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 G&T Programming School. All rights reserved.</span>
+        <span>Made with code and curiosity.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ═══════════════════════════════════════
+       NAVIGATION SCROLL & MOBILE TOGGLE
+       ═══════════════════════════════════════ */
+    const nav = document.querySelector('.nav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const expanded = navLinks.classList.contains('open');
+      navToggle.setAttribute('aria-expanded', expanded);
+    });
+
+    // Close mobile menu on link click
+    navLinks.querySelectorAll('.nav__link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ═══════════════════════════════════════
+       TYPING ANIMATION (Hero Editor)
+       ═══════════════════════════════════════ */
+    const codeLines = [
+      { num: 1, code: '<span class="code-comment"># G&Tへようこそ！</span>' },
+      { num: 2, code: '<span class="code-comment"># はじめてのプログラムを書いてみよう</span>' },
+      { num: 3, code: '' },
+      { num: 4, code: '<span class="code-keyword">def</span> <span class="code-func">greet</span><span class="code-bracket">(</span><span class="code-var">name</span><span class="code-bracket">)</span><span class="code-operator">:</span>' },
+      { num: 5, code: '    <span class="code-keyword">return</span> <span class="code-string">f"こんにちは、{name}さん！"</span>' },
+      { num: 6, code: '' },
+      { num: 7, code: '<span class="code-var">message</span> <span class="code-operator">=</span> <span class="code-func">greet</span><span class="code-bracket">(</span><span class="code-string">"あなた"</span><span class="code-bracket">)</span>' },
+      { num: 8, code: '<span class="code-func">print</span><span class="code-bracket">(</span><span class="code-var">message</span><span class="code-bracket">)</span>' },
+      { num: 9, code: '' },
+      { num: 10, code: '<span class="code-comment"># 出力: こんにちは、あなたさん！</span>' },
+    ];
+
+    const editorBody = document.getElementById('editorBody');
+
+    function renderEditor() {
+      editorBody.innerHTML = '';
+      codeLines.forEach((line, i) => {
+        const lineEl = document.createElement('div');
+        lineEl.className = 'editor__line';
+        lineEl.style.opacity = '0';
+        lineEl.style.transform = 'translateX(-8px)';
+        lineEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        lineEl.innerHTML = `
+          <span class="editor__num">${line.num}</span>
+          <span class="editor__code">${line.code}</span>
+        `;
+        editorBody.appendChild(lineEl);
+
+        setTimeout(() => {
+          lineEl.style.opacity = '1';
+          lineEl.style.transform = 'translateX(0)';
+        }, 200 + i * 180);
+      });
+
+      // Add cursor after last line
+      setTimeout(() => {
+        const lastLine = editorBody.querySelector('.editor__line:last-child .editor__code');
+        if (lastLine) {
+          lastLine.innerHTML += '<span class="editor__cursor"></span>';
+        }
+      }, 200 + codeLines.length * 180);
+    }
+
+    renderEditor();
+
+    /* ═══════════════════════════════════════
+       SCROLL REVEAL
+       ═══════════════════════════════════════ */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* ═══════════════════════════════════════
+       FAQ ACCORDION
+       ═══════════════════════════════════════ */
+    document.querySelectorAll('.faq__question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isActive = item.classList.contains('active');
+
+        // Close all
+        document.querySelectorAll('.faq__item').forEach(i => {
+          i.classList.remove('active');
+          i.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle current
+        if (!isActive) {
+          item.classList.add('active');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ═══════════════════════════════════════
+       FORM HANDLER
+       ═══════════════════════════════════════ */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const btn = e.target.querySelector('button');
+      const originalText = btn.textContent;
+
+      btn.textContent = '送信しました！';
+      btn.style.background = '#16a34a';
+      input.value = '';
+
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = '';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
